@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -61,22 +62,24 @@ public class NoticeController {
     }
 
     @GetMapping("noticeEditDetail")
-    public Map noticeEditDetail(int no) throws Exception {
+    public void noticeEditDetail(int no, Model model, @RequestParam("page") Integer page) throws Exception {
+
         Notice notice = noticeService.getEdit(no);
 
         if (notice == null) {
             throw new Exception("해당 번호의 게시글이 없습니다!");
         }
 
-        Map map = new HashMap();
-        map.put("notice", notice);
-        return map;
+        model.addAttribute("notice", notice);
+        model.addAttribute("page", page);
 
     }
 
     @PostMapping ("noticeEditUpdate")
-    public String noticeEditUpdate(Notice notice, HttpSession session) throws Exception {
+    public String noticeEditUpdate(Notice notice) throws Exception {
+
         noticeService.noticeEditUpdate(notice);
+
         return "redirect:noticeListPage?page=1";
     }
 

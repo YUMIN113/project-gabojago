@@ -129,8 +129,7 @@
                                 <div data-th-each="notice : ${notices}">
                                     <span data-th-text="'No. '+${notice.no}">100</span>
                                     <h3 class="mb-12">
-                                        <a href='detail?no=1'
-                                           data-th-href="@{noticeDetail(no=${notice.no})}"
+                                        <a data-th-href="@{noticeDetail(no=${notice.no}, page=${page})}"
                                            data-th-text="${notice.title == ''} ? '(제목없음)' : ${notice.title}">제목</a>
                                     </h3>
                                     <div class="meta-wrap">

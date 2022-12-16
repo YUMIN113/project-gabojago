@@ -45,7 +45,7 @@ public class NoticeController {
     }
 
     @GetMapping("noticeDetail")
-    public Map noticeDetail(int no) throws Exception {
+    public void noticeDetail(int no, Model model, @RequestParam("page") Integer page) throws Exception {
 
         noticeService.addHits(no); // 조회수
         Notice notice = noticeService.get(no);
@@ -55,9 +55,8 @@ public class NoticeController {
             throw new Exception("해당 번호의 게시글이 없습니다!");
         }
 
-         Map map = new HashMap();
-        map.put("notice", notice);
-        return map;
+        model.addAttribute("notice", notice);
+        model.addAttribute("page", page);
 
     }
 
@@ -99,7 +98,7 @@ public class NoticeController {
         PageResponseDto<Notice> pageResponseDto = new PageResponseDto<>(page, size, total, noticeList);
 
         model.addAttribute("notices", pageResponseDto.getDtoList());
-        model.addAttribute("pages", pageResponseDto.getPage());
+        model.addAttribute("page", pageResponseDto.getPage() + 1);
         model.addAttribute("pageTotal", pageResponseDto.getTotal());
         model.addAttribute("pageStart", pageResponseDto.getStart());
         model.addAttribute("pageEnd", pageResponseDto.getEnd());

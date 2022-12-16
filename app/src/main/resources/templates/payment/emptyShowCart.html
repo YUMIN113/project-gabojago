@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content="3 url=../exhibition/exhibitionlist" />
+    <title>가보자GO</title>
+    <meta name="description" content="초기 메인페이지" />
+    <link rel="stylesheet" href="./css/main-base.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/main-modal.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <script src="./script/jquery-3.6.0.js"></script>
+    <script src="./script/script.js"></script>
+
+    <meta name ="google-signin-client_id"
+          content="400828157542-5kee4rg9u2va7k0c5q762jqnl973c4dv.apps.googleusercontent.com">
+
+  
+  
+  </head>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+  <body class="pt-5">
+    <!-- body 이름 바꿈 -->
+
+
+    <div class="modal">
+      <div class="modal_body">
+        <h2>Sign In</h2>
+        <form action="auth/login" method="post">
+          <p>ID</p>
+          <input name="id" type="text" size="30" placeholder="ID를 입력해주세요." th:value="${id}">
+          
+          <p>Password</p>
+          <input name="password" type="password" size="20" placeholder="Password를 입력해주세요.">
+          <br>
+          <button class="btn_login" type="submit">Login</button>
+
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+          <script>
+            function onSignIn(googleUser) {
+              var profile = googleUser.getBasicProfile();
+              console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+              console.log('Name: ' + profile.getName());
+              console.log('Image URL: ' + profile.getImageUrl());
+              console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            }
+
+          </script>
+
+          <a href="#" onClick="signOut();">Sign out</a>
+          <script>
+            function signOut() {
+              var auth2 = gapi.auth2.getAuthInstance();
+              auth2.signOut().then(function () {
+                console.log('User signed out.');
+              });
+            }
+          </script>
+
+          <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+
+          <div class="savecheck">
+            <input id="savecheckbox" type="checkbox" name="saveEmail"><label for="savecheckbox">&nbsp;ID 저장</label>
+            <span><a href="#">ID 찾기</a></span><span> / </span><span><a href="#">Password 찾기</a></span>
+          </div>
+        </form>
+
+        <!--
+        <div class="loginimages">
+          <ul>
+            <li>
+
+              <a href="#">
+                <img src="./images/googlebtn.png" alt="google login button">
+              </a>
+
+            </li>
+            <li>
+              <a href="#">
+                <img src="./images/naverbtn.png" alt="naver login button">
+              </a>
+            </li>
+          </ul>
+        </div>
+         -->
+
+        <form action="auth/register">
+          <button class="btn_signin" type="submit">회원가입</button>
+        </form>
+
+      </div>
+    </div>
+
+      <!-- Navigation 사실상의 header -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="/app">가보자GO</a>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="/etc"
+                  >홈
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="../">Search</a></li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">코스추천</a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="exhibition/exhibitionlist">전시회</a></li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">고객지원</a>
+              </li>
+              <li class="nav-item" th:if="${session.loginMember != null}">
+                <a
+                  class="nav-link"
+                  href="auth/logout"
+                  th:text="${session.loginMember.name}+'(로그아웃)'"
+                  >홍길동(로그아웃)</a
+                >
+              </li>
+              <li class="nav-item" th:if="${session.loginMember == null}">
+                <span class="nav-link btn-open-popup">로그인</span>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="auth/register">회원가입</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <img src="./images/mypage.png" width="90%" height="25"
+                /></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <header class="bg-dark py-4">
+      
+        <div class="container px-4 px-lg-5 my-5">
+          <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">장바구니</h1>
+          <!--  <p class="lead fw-normal text-white-50 mb-0">?</p>-->
+          </div>
+        </div>
+      </header>
+
+      <script>
+        let queryString = new String();
+
+        function clickedCheckbox(){
+          let resultCount = 0;
+          let str = new String();
+          let checkedBoxList = document.getElementsByName("paymentBox");
+
+          for(let i=0; i< checkedBoxList.length; i++){
+            if(checkedBoxList[i].checked == true){
+              resultCount++;
+              str += checkedBoxList[i].value + ",";
+            }
+          }
+          queryString = str;
+
+          document.getElementById("resultCount").innerHTML = resultCount;
+        }
+        
+        function doPayment(){
+          let resultCount = document.getElementById("resultCount").innerHTML;
+
+        	if(resultCount < 1){
+        		alert("한개 이상의 티켓을 선택해주세요.");
+        	}
+        	else{
+            location.replace("paymentPage?exno=" + queryString);
+          }
+        }
+      </script>
+
+      <div class="container mx-auto my-auto">
+      
+        <div class="container w-100">
+          <div class="shadow-lg w-100 my-5 py-4 px-4 bg-body rounded">
+              <h4 style="text-align: center; padding-bottom: 20px;"><b>장바구니가 비어있어요! 전시회 페이지에서 마음에 드는 전시회를 담아주세요.</b></h4>
+              <h5 style="text-align: center; padding-bottom: 30px;"><b>3초 후 전시회 페이지로 이동합니다.</b></h5>
+          </div>
+        </div>
+          
+           </div>
+           </div>
+    
+    <!-- Footer-->
+    <footer class="py-4 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy;가보자GO</p>
+      </div>
+    </footer>
+    
+    <script>
+      const body = document.querySelector("body");
+      const modal = document.querySelector(".modal");
+      const btnOpenPopup = document.querySelector(".btn-open-popup");
+
+      btnOpenPopup.addEventListener("click", () => {
+        modal.classList.toggle("show");
+
+        if (modal.classList.contains("show")) {
+          body.style.overflow = "hidden";
+        }
+      });
+
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          modal.classList.toggle("show");
+
+          if (!modal.classList.contains("show")) {
+            body.style.overflow = "auto";
+          }
+        }
+      });
+    </script>
+
+  </body>
+</html>

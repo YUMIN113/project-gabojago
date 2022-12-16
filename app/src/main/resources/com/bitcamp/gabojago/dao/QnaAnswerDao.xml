@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitcamp.gabojago.dao.QnaAnswerDao">
+
+    <resultMap type="qnaBoard" id="qnaMap">
+        <id column="QNANO" property="no"/>
+        <result column="ID" property="id"/>
+        <result column="PBL" property="disclosure"/>
+        <result column="TITLE" property="title"/>
+        <result column="CONT" property="questionContent"/>
+        <result column="WDATE" property="createdDate"/>
+        <result column="ANSCONT" property="answerContent"/>
+        <result column="ANSDATE" property="answerDate"/>
+    </resultMap>
+
+
+    <update id="update" parameterType="qnaBoard">
+        update jang_qna set
+        ANSCONT=#{answerContent},
+        ANSDATE=now()
+        where QNANO=#{no}
+    </update>
+</mapper>

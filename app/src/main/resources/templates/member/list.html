@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  <title>gabojago</title>
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-UkVD+zxJKGsZP3s/JuRzapi4dQrDDuEf/kHphzg8P3v8wuQ6m9RLjTkPGeFcglQU" crossorigin="anonymous">
+
+
+</head>
+<!-- Header-->
+<header class="bg-dark py-4">
+
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">회원 관리</h1>
+      <!--  <p class="lead fw-normal text-white-50 mb-0">?</p>-->
+    </div>
+  </div>
+</header>
+
+<!-- Navigation 사실상의 header -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/app">가보자GO</a>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item"><a class="nav-link" href="/app/search/searchForm">검색</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="/app/recommendation/recommendationList">코스추천</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" href="/app/exhibition/exhibitionlist">전시회
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/app/support/">고객지원</a>
+        </li>
+        <li class="nav-item" th:if="${session.loginMember != null}">
+          <a
+              class="nav-link"
+              href="/app/auth/logout"
+              th:text="${session.loginMember.name}+'(로그아웃)'">홍길동(로그아웃)</a>
+        </li>
+        <li class="nav-item" th:if="${session.loginMember == null}">
+          <span class="nav-link btn-open-popup">로그인</span>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/app/myPage/">
+            <img src="../images/mypage.png" width="90%" height="25"
+            /></a>
+        </li>
+        <!--어드민만 보일 수 있음-->
+        <li class="nav-item ">
+              <span data-th-if="${session.loginMember} != null and ${session.loginMember.id} == 'admin'">
+              <a class="nav-link" href='/app/member/list'>회원 관리</a></span> </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+<body>
+
+<!--<a href='form'>새 회원</a>-->
+<table border='1'
+       class="table table-striped table-hover" style="width: 95%;">
+
+  <br>
+  <div style='width:80px;float: right;'>
+    <button type="button" class="btn btn-outline-dark"
+    ><a href='../'>메인</a></button>
+  </div>
+  <br>
+  <br>
+
+  <tr>
+    <th>아이디</th>
+    <th>이름</th>
+    <th>닉네임</th>
+    <th>이메일</th>
+    <th>가입일</th>
+    <th>탈퇴일</th>
+    <th>전화번호</th>
+    <th>생일</th>
+    <th>성별</th>
+    <th>SNS</th>
+    <th>MBTI</th>
+    <th>활성여부</th>
+  </tr>
+
+  <tr data-th-each="member : ${members}">
+
+    <td><a href='detail?id=${member.id}'
+           data-th-href="@{detail(id=${member.id})}"
+      data-th-text="${member.id}">user1</a></td>
+
+  <td><a href='detail?id=${member.id}'
+         data-th-href="@{detail(id=${member.id})}"
+         data-th-text="${member.name}">이름</a></td>
+
+  <td data-th-text="${member.nickName}">꼉이</td>
+
+  <td data-th-text="${member.email}">user@test.com</td>
+
+  <td data-th-text="${member.createdDate}">1996-03-22</td>
+
+    <td data-th-text="${member.outDate}">1996-03-22</td>
+
+  <td data-th-text="${member.phoneNo}">01000000000</td>
+
+  <td data-th-text="${member.birthDay}">1996-03-22</td>
+
+    <td data-th-text="${member.gender}">여자</td>
+
+    <td data-th-text="${member.snsAddress}">sns...</td>
+
+  <td data-th-text="${member.mbti}">ESTJ</td>
+
+  <td data-th-text="${member.status}">활성</td>
+
+ </tr>
+
+</table>
+
+<!-- Footer-->
+<footer class="bg-dark">
+  <p>Copyright &copy;가보자GO</p>
+</footer>
+
+<style>
+  footer {
+    /* footer를 aside위에 올리기 위해 사용(부유객체) */
+    position: relative;
+    height: 70px;
+    width: 100%;
+    padding: 0 25px;
+    line-height: 60px;
+    color: white;
+    border-top: 1px solid #dee5e7;
+    background-color: #343A40;
+    margin-top:auto;
+    text-align:center;
+  }
+</style>
+
+<style>
+  table {
+    width: 1200px;
+    margin: 0 auto;
+  }
+  a {
+    text-decoration: none;
+  }
+
+</style>
+</body>
+</html>
+
+
+

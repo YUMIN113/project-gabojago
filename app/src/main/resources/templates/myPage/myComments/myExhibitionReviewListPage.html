@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>myExhibitionReviewListPage</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link th:href="@{/css/bootstrap.min.css}"
+            href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Herr+Von+Muellerhoff" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../../app/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="../../../app/css/animate.css">
+
+    <link rel="stylesheet" href="../../../app/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../../../app/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="../../../app/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="../../../app/css/aos.css">
+
+    <link rel="stylesheet" href="../../../app/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="../../../app/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="../../../app/css/jquery.timepicker.css">
+
+    <link rel="stylesheet" href="../../../app/css/flaticon.css">
+    <link rel="stylesheet" href="../../../app/css/icomoon.css">
+    <link rel="stylesheet" href="../../../app/css/yuminstyle.css">
+
+    <style>
+        #colorlib-aside #colorlib-logo {
+            width: 180px;
+            height: 180px;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            border-radius: 50%;
+            margin: 0 auto;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .profile {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    </style>
+
+    <style>
+        tr:hover {
+            background-color: black;
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!--Header-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/app">가보자GO</a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item"><a class="nav-link" href="/app/search/searchForm">검색</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/app/recommendation/recommendationList">코스추천</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/app/exhibition/exhibitionlist">전시회</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/app/support/">고객지원</a>
+                </li>
+                <li class="nav-item active" th:if="${session.loginMember != null}">
+                    <a
+                            class="nav-link"
+                            href="/app/auth/logout"
+                            th:text="${session.loginMember.name}+'(로그아웃)'">홍길동(로그아웃)</a>
+                </li>
+                <li class="nav-item" th:if="${session.loginMember == null}">
+                    <span class="nav-link btn-open-popup">로그인</span>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/app/myPage/">
+                        <img src="/app/images/mypage.png" width="90%" height="25"
+                        /></a>
+                </li>
+
+                <!--어드민만 보일 수 있음-->
+                <li class="nav-item">
+              <span data-th-if="${session.loginMember} != null and ${session.loginMember.id} == 'admin'">
+              <a class="nav-link" href='/app/member/list'>회원 관리</a></span> </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Header End -->
+
+<div id="colorlib-page">
+
+<aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
+    <h1 id="colorlib-logo"><span><img class="profile" th:src="@{/board/files/} + ${profileFig}"/></span></h1>
+    <div><h6 style="color: black; font-weight: bold; font-size: xx-large;" th:text="${nickName}"></h6></div>
+    <nav id="colorlib-main-menu" role="navigation">
+        <ul class="pt-4 pl-0 pr-0">
+            <li><a th:href="@{/myPage/}">About Me</a></li>
+            <li><a th:href="@{/myPage/myRecommendation/myRecommendationListPage?page=1}">My Recommendation</a></li>
+            <li class="colorlib-active"><a th:href="@{/myPage/myComments/myRecommendationCommentListPage?page=1}">My Comments</a></li>
+            <li><a href="../../payment/showCart">Shopping Bag</a></li>
+            <li><a href="../../payment/showOrderingInfo">My Purchase</a></li>
+            <br>
+            <li><a th:href="@{/myPage/modify/profileDetail}">My Profile</a></li>
+            <li><a th:href="@{/myPage/modify/myAccountDetail}">My Account</a></li>
+        </ul>
+    </nav>
+</aside> <!-- END COLORLIB-ASIDE -->
+    <div id="colorlib-main">
+    <section class="ftco-section ftco-bread">
+        <div class="container pt-4">
+            <div class="slider-text justify-content-center align-items-center">
+                <div class="col-md-11 ftco-animate">
+                    <p class="breadcrumbs"><span class="mr-2"><a th:href="@{/myPage/myComments/myRecommendationCommentListPage?page=1}">Recommendation</a></span> <span>Exhibition</span></p>
+                    <h1 class="bread">My Exhibition Comments</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <section class="ftco-section pl-4 pr-5 pb-5 pt-4">
+            <div class="container">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text text-2">
+                                <div data-th-each="exhibitionReview : ${myExhibitionReviews}">
+                                    <h5 class="mb-12" >
+                                        <span><a href='detail?exno=1' style="color: black;"
+                                                 data-th-href="@{../../exhibition/detail(exno=${exhibitionReview.exno})}"
+                                                 data-th-text="${exhibitionReview.cont}">내용</a></span>
+                                    </h5>
+                                    <div class="meta-wrap">
+                                        <p class="meta">
+                                            <span data-th-text="${exhibitionReview.wdate}">2022-11-03</span>
+                                        </p>
+                                    </div>
+                                    <span><a href='detail?exno=1' style="color: black;"
+                                             data-th-href="@{../../exhibition/detail(exno=${exhibitionReview.exno})}"
+                                             data-th-text="'전시회 No.' +${exhibitionReview.exno}">100</a></span>
+                                    <hr class="my-4" style="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- END-->
+
+                <div class="row">
+                    <div class="col-md-12 text-left">
+                        <div class="block-27">
+                            <ul>
+                                <li class="bt-color"><a th:if="${prev}==true"
+                                                        data-th-href="@{myExhibitionReviewListPage(page=${pageStart - 1})}"
+                                                        th:text="'<'">1</a></li>
+
+                                <li><th:block class="page-item"
+                                              th:if="${pageTotal > 0}"
+                                              data-th-each="pageNum : ${#numbers.sequence(pageStart, pageEnd)}">
+                                    <a data-th-href="@{myExhibitionReviewListPage(page=${pageNum})}"
+                                       th:text="${pageNum}">1</a>
+                                </th:block></li>
+
+                                <li><a th:if="${next}==true"
+                                       data-th-href="@{myExhibitionReviewListPage(page=${pageEnd + 1})}"
+                                       th:text="'>'">1</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /container -->
+        </section>
+    </div>
+</div>
+
+    <!-- Footer-->
+    <footer class="py-4 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy;가보자GO</p>
+      </div>
+    </footer>
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+    <script src="../../../app/js/jquery.min.js"></script>
+    <script src="../../../app/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="../../../app/js/popper.min.js"></script>
+    <script src="../../../app/js/bootstrap.min.js"></script>
+    <script src="../../../app/js/jquery.easing.1.3.js"></script>
+    <script src="../../../app/js/jquery.waypoints.min.js"></script>
+    <script src="../../../app/js/jquery.stellar.min.js"></script>
+    <script src="../../../app/js/owl.carousel.min.js"></script>
+    <script src="../../../app/js/jquery.magnific-popup.min.js"></script>
+    <script src="../../../app/js/aos.js"></script>
+    <script src="../../../app/js/jquery.animateNumber.min.js"></script>
+    <script src="../../../app/js/bootstrap-datepicker.js"></script>
+    <script src="../../../app/js/jquery.timepicker.min.js"></script>
+    <script src="../../../app/js/scrollax.min.js"></script>
+    <script src="../../../app/js/main.js"></script>
+
+
+</body>
+</html>

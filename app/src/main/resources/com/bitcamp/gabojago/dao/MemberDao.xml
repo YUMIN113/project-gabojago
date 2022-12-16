@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitcamp.gabojago.dao.MemberDao">
+
+    <!-- 자바 객체의 프로퍼티와 컬럼 이름을 연결 -->
+    <resultMap type="member" id="memberMap">
+        <id column="ID" property="id"/>
+        <result column="PWD" property="password"/>
+        <result column="NNAME" property="nickName"/>
+        <result column="SIDATE" property="createdDate"/>
+        <result column="PROFILE" property="profileFig"/>
+        <result column="NAME" property="name"/>
+        <result column="EMAIL" property="email"/>
+        <result column="PNUM" property="phoneNo"/>
+        <result column="BIRTH" property="birthDay"/>
+        <result column="GENDER" property="gender"/>
+        <result column="SNS" property="snsAddress"/>
+        <result column="MBTI" property="mbti"/>
+        <result column="STATUS" property="status"/>
+        <result column="KAKAOID" property="kakaoId"/>
+
+    </resultMap>
+
+    <resultMap type="report" id="reportMap">
+        <id column="rpno" property="rpno"/>
+        <result column="recono" property="recono"/>
+        <result column="id" property="id"/>
+        <result column="rsn" property="rsn"/>
+        <result column="rst" property="rst"/>
+        <result column="rstdate" property="rstdate"/>
+    </resultMap>
+
+    <!--회원 추가-->
+    <insert id="join" parameterType="Member">
+        insert into jang_member(ID,PWD,NAME,EMAIL,NNAME,PNUM)
+        values(#{id},sha2(#{password},256),#{name},#{email},#{nickName},#{phoneNo})
+    </insert>
+
+    <!--로그인 조회-->
+    <select id="findByIdPassword" resultMap="memberMap">
+        select
+            ID,
+            NNAME,
+            SIDATE,
+            PROFILE,
+            NAME,
+            EMAIL,
+            STATUS
+        from
+            jang_member
+        where
+            ID=#{id} and PWD=sha2(#{password},256)
+            and (STATUS = '활성' or STATUS='신고')
+    </select>
+
+    <select id="findById" resultMap="memberMap">
+        select
+            ID
+        from
+            jang_member
+        where
+            ID=#{id}
+    </select>
+
+    <select id="findByNickName" resultMap="memberMap">
+        select
+            NNAME
+        from
+            jang_member
+        where
+            NNAME=#{nickName}
+    </select>
+
+    <select id="findByEmail" resultMap="memberMap">
+        select
+            EMAIL, PNUM
+        from
+            jang_member
+        where
+            EMAIL=#{email}
+    </select>
+
+    <select id="findByPhoneNo" resultMap="memberMap">
+        select
+            EMAIL, PNUM
+        from
+            jang_member
+        where
+            PNUM=#{phoneNo}
+    </select>
+
+
+
+    <update id="updateStatus" parameterType="Member">
+        update jang_member set
+        status='신고'
+        where
+        id=#{id}
+    </update>
+
+    <select id="checkCorrectUser" resultMap="memberMap">
+        select
+            status
+        from
+            jang_member
+        where
+            status='신고' and
+            id=#{id}
+    </select>
+
+    <!--장현경 작업중 -->
+    <select id="findAll" resultMap="memberMap">
+        select
+        *
+        from
+        jang_member
+        order by
+        ID = #{id}
+    </select>
+
+    <select id="findByIdAll" resultMap="memberMap">
+      <!--  select
+        jang_member.*,
+        jr.rsn
+        from
+        jang_member
+        join jang_report jr on jang_member.ID = jr.ID
+        where
+        jang_member.ID =#{id}-->
+
+        select
+        *
+        from
+        jang_member
+        where
+        ID = #{id}
+    </select>
+
+    <select id="findByIdReport" resultMap="reportMap">
+        select *
+        from jang_report
+        where ID =#{id}
+    </select>
+
+    <select id="findAllReport" resultMap="reportMap">
+        select *
+        from jang_report
+        where ID =#{id}
+    </select>
+
+
+    <delete id="delete">
+        delete from jang_member
+        where ID=#{id}
+    </delete>
+ <!--   pwd=sha2(#{password},256)-->
+    <update id="update" parameterType="member">
+        update jang_member set
+        <!--   pwd=sha2(#{password},256)-->
+        nname=#{nickName},
+        name=#{name},
+        pnum=#{phoneNo},
+        birth=#{birthDay},
+        gender=#{gender},
+        sns=#{snsAddress},
+        mbti=#{mbti},
+        status=#{status}
+        where
+        id=#{id};
+    </update>
+
+    <select id="findId" parameterType="map" resultMap="memberMap">
+        select
+        *
+        from
+        jang_member
+        where
+        name = #{name} and
+        email= #{email}
+    </select>
+
+    <select id="findpwd" parameterType="map" resultMap="memberMap">
+        select
+        *
+        from
+        jang_member
+        where
+        id=#{id} and
+        name = #{name} and
+        email= #{email}
+    </select>
+
+    <update id="findpwdupdate" parameterType="map">
+        update jang_member set
+        pwd=sha2(#{password},256)
+        where
+        id=#{id} and
+        name = #{name} and
+        email= #{email}
+    </update>
+
+
+    <select id="selectKakaoId" parameterType="long" resultMap="memberMap">
+        SELECT * FROM jang_member WHERE KAKAOID = #{value}
+    </select>
+
+</mapper>

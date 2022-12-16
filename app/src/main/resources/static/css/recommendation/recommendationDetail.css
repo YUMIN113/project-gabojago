@@ -1,0 +1,269 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style-type: none;
+}
+
+/* header footer 제외 콘텐츠 */
+.ga-content-detail {
+  background-color: #f5f5f5;
+  padding-top: 13vh;
+  padding-left: 18vw;
+  padding-right: 18vw;
+  position: relative;
+}
+
+/* 목록, 수정, 삭제 */
+.ga-selectbtn {
+  text-align: right;
+}
+
+.ga-selectbtn > button {
+  border: none;
+  background-color: inherit;
+  margin-left: 1%;
+}
+
+.ga-selectbtn > button > a {
+  color: gray;
+  text-decoration: none;
+}
+
+/* 추가정보1: 작성자, 제목, 작성일 */
+/* 작성자, 제목 */
+.ga-reco-info1-1 {
+  text-align: left;
+}
+
+/* 작성일 */
+.ga-reco-info1-2 {
+  text-align: right;
+}
+
+/* 제목 */
+.ga-reco-info1-1 > h2 {
+  font-weight: 720;
+  font-size: 37px;
+}
+
+.reportBtn-open-popup {
+  border: none;
+  font-size: 14px;
+  color: gray;
+  background-color: #f5f5f5;
+}
+
+/* 작성자 */
+.ga-reco-info1-1 > h3 {
+  font-weight: 500;
+  font-size: 17px;
+  color: gray;
+}
+
+/* 작성일 */
+.ga-reco-info1-2 > h4 {
+  font-weight: 500;
+  font-size: 14px;
+  color: gray;
+}
+
+/* 추가정보 hover */
+.ga-reco-plusdata {
+  float: left;
+  display: inline-block;
+  cursor: zoom-in;
+  color: rgb(109, 109, 255);
+}
+
+/* 추가정보2: 전체 */
+.ga-reco-info2 {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+/* 추가정보2: 조회수 */
+.ga-reco-info2 > span {
+  font-size: 14px;
+}
+
+/* hover 이벤트 */
+.ga-reco-plusdata:hover ~ .ga-reco-info3 {
+  display: block;
+}
+
+/* 추가정보3: 교통수단, 동물, 동행 */
+.ga-reco-info3 {
+  display: none;
+  position: absolute;
+  left: 19vw;
+  top: 35.5vh;
+  z-index: 1;
+
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 3px 3px 2px 3px gray;
+  padding: 10px;
+}
+
+.ga-reco-info3 > h5 {
+  font-size: 15px;
+}
+
+/* 장소리뷰 한조각 */
+.ga-review {
+  background-color: white;
+  border-radius: 7px;
+  height: 430px;
+  width: 100%;
+  padding: 2%;
+}
+
+/* 이미지 껍데기 */
+.ga-review-img-ul {
+  background-color: rgb(216,216,216);
+  position: relative;
+  top: -19px;
+  display: inline-block;
+  width: 48%;
+  height: 340px;
+  overflow: scroll;
+  border-radius: 8px;
+}
+
+/* 이미지 */
+.ga-review-img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 4px;
+}
+
+/* 장소후기글표시 */
+.ga-review-cont {
+  background-color: #f5f5f5;
+  padding-top: -10px;
+  margin-left: 2%;
+  width: 49.3%;
+  height: 375px;
+  padding: 8px;
+  resize: none;
+  border: none;
+  border-radius: 8px;
+}
+
+/* 장소주소표시 */
+.ga-review-adrs {
+  width: 48%;
+  height: 20px;
+  position: relative;
+  top: -26px;
+  color: rgb(90, 90, 90);
+  font-weight: normal;
+}
+
+/* 장소리뷰 끝을 알리는 가로줄 */
+.ga-review-horizon {
+  background-color: #D6E6F2;
+  height: 0.8px;
+  margin-top: 17.5px;
+  margin-bottom: 17.5px;
+}
+
+
+
+
+/* 댓글입력 폼 전체 */
+.ga-jang-comment-write {
+  padding: 5px;
+  margin-bottom: 40px;
+}
+
+/* 댓글작성 제목 */
+.ga-comment-write-title {
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* 댓글작성 내용입력란 전체 */
+.ga-comment-write-inputbox {
+  border: 1px solid gray;
+}
+
+/* 댓글작성 내용입력란 */
+.ga-comment-write-input {
+  border: none;
+  width: 100%;
+  height: 120px;
+  padding: 10px;
+  resize: none;
+}
+
+/* 댓글작성 버튼 */
+.ga-comment-write-btn {
+  float: right;
+
+  background: #4843ab;
+  color: #fff;
+  border: none;
+
+  position: relative;
+  height: 30px;
+  padding: 0 1em;
+  cursor: pointer;
+  transition: 800ms ease all;
+  outline: none;
+}
+
+/* 댓글 리스트 전체 */
+.ga-jang-comment {
+  padding-bottom: 100px;
+}
+
+.ga-comment-list {
+  width: 100%;
+  word-break:break-all;
+}
+
+.ga-comment-list tr:nth-of-type(1) > th {
+  height: 60px;
+}
+
+.ga-jang-comment th {
+  text-align: center;
+  font-weight: bold;
+}
+
+.ga-comment-list td:nth-of-type(1) {
+  width: 8%;
+}
+
+.ga-comment-list td:nth-of-type(2) {
+  width: 18%;
+}
+
+.ga-comment-list td:nth-of-type(3) {
+  width: 53%;
+  text-align: left;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+.ga-comment-list td:nth-of-type(4) {
+  width: 13%;
+}
+
+.ga-comment-list td:nth-of-type(5) {
+  width: 8%;
+}
+
+.ga-comment-list td {
+  text-align: center;
+}

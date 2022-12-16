@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitcamp.gabojago.dao.search.ExhibitionSearchDao">
+
+    
+    <!-- 제목으로 검색-->
+    <select id="resultByTitle" resultType="hashMap">
+      SELECT ex.EXNAME, ex.CONT, ex.STDATE, ex.EDDATE, ex.EXNO, ex_file.PATH
+      FROM jang_exhibition AS ex INNER JOIN jang_exhibition_file AS ex_file
+      ON ex.EXNO = ex_file.EXNO
+      WHERE
+        <trim prefixOverrides="OR">
+          <foreach item="keyword" collection="array">
+              <trim prefix="OR">
+              <!-- 1. mybatis bind 사용 하여 CONCAT 함수 제거 예정
+                   2. LIKE 절의 와일드카드 타입이 최상단 위치 하면 Full Table Scan 하는데 이거 최적화 가능?-->
+                  ex.EXNAME LIKE CONCAT('%',#{keyword},'%')
+              </trim>
+          </foreach>
+          ;
+        </trim>
+    </select>
+
+    <!-- 내용으로 검색-->    
+    <select id="resultByContent" resultType="hashMap">
+      SELECT ex.EXNAME, ex.CONT, ex.STDATE, ex.EDDATE, ex.EXNO, ex_file.PATH
+      FROM jang_exhibition AS ex INNER JOIN jang_exhibition_file AS ex_file
+      ON ex.EXNO = ex_file.EXNO
+      WHERE
+        <trim prefixOverrides="OR">
+          <foreach item="keyword" collection="array">
+              <trim prefix="OR">
+                  ex.CONT LIKE CONCAT('%',#{keyword},'%')
+              </trim>
+          </foreach>
+          ;
+        </trim>
+    </select>
+    
+    <!-- 제목 + 내용으로 검색-->
+    <select id="resultByTitleWithContent" resultType="hashMap">
+      SELECT ex.EXNAME, ex.CONT, ex.STDATE, ex.EDDATE, ex.EXNO, ex_file.PATH
+      FROM jang_exhibition AS ex INNER JOIN jang_exhibition_file AS ex_file
+      ON ex.EXNO = ex_file.EXNO
+      WHERE
+        <trim prefixOverrides="OR">
+          <foreach item="keyword" collection="array">
+              <trim prefix="OR">
+                  ex.EXNAME LIKE CONCAT('%',#{keyword},'%')
+                  OR
+                  ex.CONT LIKE CONCAT('%',#{keyword},'%')
+              </trim>
+          </foreach>
+          ;
+        </trim>
+    </select>
+    
+    <!-- 날짜로 검색 (미구현)
+    <select id="쓰지마" resultType="hashMap">
+      SELECT ex.EXNAME, ex.CONT, ex.STDATE, ex.EDDATE, ex.PRICE, ex_file.PATH
+      FROM jang_exhibition AS ex INNER JOIN jang_exhibition_file AS ex_file
+      ON ex.EXNO = ex_file.EXNO
+      WHERE
+        <trim prefixOverrides="OR">
+          <foreach item="keyword" collection="array">
+              <trim prefix="OR">
+                  ex.EXNAME LIKE CONCAT('%',#{keyword},'%')
+              </trim>
+          </foreach>
+          
+          <foreach item="keyword" collection="array">
+              <trim prefix="OR">
+                  ex.CONT LIKE CONCAT('%',#{keyword},'%')
+              </trim>
+          </foreach>
+          ;
+        </trim>
+    </select>
+    -->
+    
+    
+</mapper>
+
+

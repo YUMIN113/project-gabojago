@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitcamp.gabojago.dao.MyRecommendationDao">
+
+    <!-- resultMap -->
+    <resultMap type="recommendation" id="recommendationMap">
+        <result column="RECONO" property="recono"/>
+        <result column="TITLE" property="title"/>
+        <result column="CNT" property="cnt"/>
+        <result column="WDATE" property="wdate"/>
+        <result column="ACT" property="act"/>
+        <result column="PET" property="pet"/>
+        <result column="FRD" property="frd"/>
+        <result column="CPLE" property="cple"/>
+        <result column="FMLY" property="fmly"/>
+        <result column="SOLO" property="solo"/>
+        <result column="TPNAME" property="tpname"/>
+
+        <association property="writer" javaType="member">
+            <id column="id" property="id"/>
+            <result column="nname" property="nickName"/>
+        </association>
+    </resultMap>
+
+    <!-- 게시물 총개수 -->
+    <select id="count" resultType="int">
+        select
+        count(RECONO)
+        from jang_so_recommendation
+        where jang_so_recommendation.ID= #{id}
+    </select>
+
+    <!-- 게시물 목록 + paging -->
+    <select id="myRecommendationListPage" resultMap="recommendationMap">
+        select
+        jang_so_recommendation.*
+        from jang_so_recommendation
+        where jang_so_recommendation.ID = #{id}
+        order by jang_so_recommendation.WDATE desc
+        limit #{size} offset #{displayPost}
+    </select>
+
+</mapper>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>가보자GO</title>
+  <meta name="description" content="코스추천글 신고 성공 실패" />
+</head>
+<body>
+
+  <script data-th-inline="javascript">
+    const result = [[${session.reportResult}]];
+    switch (result) {
+      case "empty": {alert("신고하기 위해서는 로그인이 필요합니다.");} break;
+      case "incorrect": {alert("제재당한 이용자는 사용할 수 없는 기능입니다.");} break;
+      case "self": {alert("자신의 게시물은 신고할 수 없습니다.");} break;
+      case "overflow": {alert("이미 신고처리가 진행중인 게시물입니다.");} break;
+    }
+
+    window.location = '/app/recommendation/recommendationList';
+  </script>
+
+</body>
+</html>

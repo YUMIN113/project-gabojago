@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitcamp.gabojago.dao.EventItemDao">
+
+    <resultMap type="eventItem" id="eventItemMap">
+        <id column="ITMNO" property="itemNo"/>
+        <id column="NAME" property="name"/>
+        <id column="CNT" property="stock"/>
+        <id column="EVTNO" property="eventNo"/>
+        <id column="RANK" property="ranking"/>
+        <result column="ITFNO" property="eventAttachedFile.fileNo"/>
+        <result column="PATH" property="eventAttachedFile.filePath"/>
+        <result column="FNAME" property="eventAttachedFile.fileName"/>
+        <result column="ITMNO" property="eventAttachedFile.itemNo"/>
+
+    </resultMap>
+
+    <resultMap type="eventAttachedFile" id="eventAttachedFileMap">
+        <id column="ITFNO" property="fileNo"/>
+        <id column="PATH" property="filePath"/>
+        <id column="FNAME" property="fileName"/>
+        <id column="ITMNO" property="itemNo"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="eventItem"
+            useGeneratedKeys="true" keyColumn="itmno" keyProperty="itemNo">
+        insert into jang_item(NAME,CNT,EVTNO,RANK)
+        values (#{name},#{stock},#{eventNo},#{ranking})
+    </insert>
+
+    <select id="getItemsCountByEventNo" resultType="int" parameterType="int">
+        select
+            count(*)
+        from jang_item
+        where EVTNO=#{eventNo}
+    </select>
+
+    <select id="getItemListByEventNo" resultMap="eventItemMap" parameterType="int">
+        select
+            itm.ITMNO,
+            itm.NAME,
+            itm.CNT,
+            itm.EVTNO,
+            itm.RANK,
+            itmf.ITMNO,
+            itmf.PATH,
+            itmf.FNAME
+        from jang_item itm
+        left outer join jang_event_file itmf
+            on itm.ITMNO = itmf.ITMNO
+        where EVTNO=#{eventNo}
+    </select>
+
+    <delete id="deleteItemByEventNo" parameterType="int">
+        delete from jang_item
+        where EVTNO=#{eventNo}
+    </delete>
+
+    <delete id="deleteFileByEventNo" parameterType="int">
+        delete from jang_event_file
+        where ITMNO in (select ITMNO from jang_item where EVTNO=#{eventNo})
+    </delete>
+
+    <insert id="insertEventFile" parameterType="eventAttachedFile"
+            useGeneratedKeys="true" keyColumn="fileNo" keyProperty="fileNo">
+        insert into jang_event_file(PATH, FNAME, ITMNO)
+        values (#{filePath},#{fileName},#{itemNo})
+    </insert>
+
+</mapper>

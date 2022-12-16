@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>가보자GO</title>
+    <meta name="description" content="초기 메인페이지" />
+    <meta http-equiv="refresh" content="3 url=exhibitionlist" />
+    <link rel="stylesheet" href="./css/main-base.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/main-modal.css" />
+    <link rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <script
+        src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+        crossorigin="anonymous"></script>
+  </head>
+
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-UkVD+zxJKGsZP3s/JuRzapi4dQrDDuEf/kHphzg8P3v8wuQ6m9RLjTkPGeFcglQU" crossorigin="anonymous">
+
+  <body class="pt-5">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="/app">가보자GO</a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item"><a class="nav-link" href="/app/search/searchForm">검색</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="/app/recommendation/recommendationList">코스추천</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="/app/exhibition/exhibitionlist">전시회</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="/app/support/">고객지원</a>
+            </li>
+            <li class="nav-item" th:if="${session.loginMember != null}">
+              <a
+                class="nav-link"
+                href="/app/auth/logout"
+                th:text="${session.loginMember.name}+'(로그아웃)'">홍길동(로그아웃)</a>
+            </li>
+            <li class="nav-item" th:if="${session.loginMember == null}">
+              <span class="nav-link btn-open-popup">로그인</span>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/app/myPage/">
+                <img src="/app/images/mypage.png" width="90%" height="25"
+              /></a>
+            </li>
+
+            <!--어드민만 보일 수 있음-->
+            <li class="nav-item">
+            <span data-th-if="${session.loginMember} != null and ${session.loginMember.id} == 'admin'">
+            <a class="nav-link" href='/app/member/list'>회원 관리</a></span> </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+      <!-- Navigation 사실상의 header 끝 -->
+
+
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center">
+            <h4 class="display-4 fw-bolder">장바구니에 티켓이 추가되었습니다!</h4>
+        </div>
+    </div>
+
+
+  <div class="container w-100">
+        <h4 style="text-align: center; padding-bottom: 30px;"><b>3초 후 전시회 페이지로 이동합니다.</b></h2>
+  </div>
+      <!-- Footer-->
+    <footer class="py-4 bg-dark">
+        <div class="container">
+          <p class="m-0 text-center text-white">Copyright &copy;가보자GO</p>
+        </div>
+      </footer>
+  
+  
+      <!--로그인 모달 창-->
+      <div class="modal">
+        <div class="modal_body" style=" background: rgba(255,255,255,0.8); ">
+          <div class="out" style=" float: right;"><img src = "/app/images/X.png"></div>
+          <!--나가기-->
+       <br>
+          <h2 style=" text-align: center;"> 로그인 </h2>
+  
+          <form action="/app/auth/login" method="post" >
+            <p>ID</p>
+            <input name="id" type="text" size="30" placeholder="ID를 입력해주세요." th:value="${id}">
+            <br> <!--공백-->
+            <p>Password</p>
+            <input name="password" type="password" size="20" placeholder="Password를 입력해주세요.">
+            <br>
+            <br> <!--공백-->
+            <button class="btn_login" type="submit"
+                    style="background-color: #ffca2c">Login</button>
+  
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+  
+            <script>
+              function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                  console.log('User signed out.');
+                });
+              }
+            </script>
+  
+            <div class="savecheck">
+              <input id="savecheckbox" type="checkbox" name="saveEmail"><label for="savecheckbox">&nbsp;ID 저장</label>
+              <span><a href="/app/member/findid">ID 찾기</a></span><span> / </span><span><a href="/app/member/findpwd">Password 찾기</a></span>
+            </div>
+          </form>
+  
+          <form action="auth/register">
+            <button class="btn_signin" type="submit"
+                    style="background-color: #ffca2c">회원가입</button>
+          </form>
+        </div>
+      </div>
+  
+  
+      <!--login modal script-->
+      <script>
+        const body = document.querySelector("body");
+        const modal = document.querySelector(".modal");
+        const btnOpenPopup = document.querySelector(".btn-open-popup");
+  
+        btnOpenPopup.addEventListener("click", () => {
+          modal.classList.toggle("show");
+  
+          if (modal.classList.contains("show")) {
+            body.style.overflow = "hidden";
+          }
+        });
+  
+        modal.addEventListener("click", (event) => {
+          if (event.target === modal) {
+            modal.classList.toggle("show");
+  
+            if (!modal.classList.contains("show")) {
+              body.style.overflow = "auto";
+            }
+          }
+        });
+  
+        // 장현경 : 로그인 모달 창 "나가기"
+        $('.out').click(function() {
+          $('.modal').removeClass('show')
+        })
+      </script>
+      <!--로그인 모달 창 끝-->
+  
+  
+    </body>
+  </html>

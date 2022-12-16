@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>exhibition</title>
+<style>
+tr:hover {
+  background-color: navy;
+  color: white;
+}
+</style>
+</head>
+<body>
+  <h1>전시회 리뷰</h1>
+  <a href='form'>새 글</a>
+  <table exhibitionReview='1'>
+
+
+  <!-- 첨부파일 후에 추가-->
+
+
+    <th>번호</th><td><input name='rvno' type='number'
+                          value='1'
+                          data-th-value="${exhibitionReview.rvno}"
+                          readonly></td>
+
+    <tr>
+      <th>아이디</th><td data-th-text="${exhibitionReview.id}">홍길동</td>
+    </tr>
+
+
+    <th>내용</th>
+
+    <td data-th-href="@{detail(rvno=${exhibitionReview.rvno})}"
+        data-th-text="${exhibitionReview.cont == ''} ? '(제목없음)' : ${exhibitionReview.cont}">
+      <input name='cont' type='text'
+               value='ㅎ'
+               data-th-value="${exhibitionReview.cont}"
+               readonly></td>
+
+    <tr>
+      <th>작성일</th><td data-th-text="${exhibitionReview.wdate}">2022-1-1</td>
+    </tr>
+
+
+
+
+  </table>
+  <p><a href='../'>메인</a></p>
+
+
+</body>
+</html>
+
+
+
+    

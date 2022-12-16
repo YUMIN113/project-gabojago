@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitcamp.gabojago.dao.ExhibitionDao">
+
+    <!-- 자바 객체의 프로퍼티와 컬럼 이름을 연결 -->
+    <resultMap type="exhibition" id="exhibitionMap">
+        <result column="EXNO" property="exno"/>
+        <result column="EXNAME" property="exname"/>
+        <result column="CONT" property="cont"/>
+        <result column="WDATE" property="wdate"/>
+        <result column="PLNO" property="plno"/>
+        <result column="STDATE" property="stdate"/>
+        <result column="EDDATE" property="eddate"/>
+        <result column="PRICE" property="price"/>
+
+        <!-- 조인 결과에서 같은 게시글에 대해 여러 개의 첨부 파일 데이터를 담을 경우 -->
+        <collection property="exhibitionFiles" ofType="exhibitionFile">
+            <id column="exfno" property="exfno"/>
+            <result column="path" property="path"/>
+            <result column="fname" property="fname"/>
+        </collection>
+    </resultMap>
+
+    <resultMap type="exhibitionFile" id="exhibitionFileMap">
+        <id column="exfno" property="exfno"/>
+        <result column="path" property="path"/>
+        <result column="fname" property="fname"/>
+        <result column="exno" property="exno"/>
+    </resultMap>
+
+
+
+    <select id="exhibitionList" resultMap="exhibitionMap">
+      select
+        jang_exhibition.*,
+        jang_exhibition_file.*
+        from jang_exhibition
+        left join jang_exhibition_file
+        on
+        jang_exhibition.EXNO = jang_exhibition_file.EXNO;
+
+
+       <!-- select
+        jang_exhibition.*,
+        jang_exhibition_file.*
+        from jang_exhibition
+        left join jang_exhibition_file
+        on
+        jang_exhibition.EXNO = jang_exhibition_file.EXNO
+        where jang_exhibition_file.EXNO
+        AND jang_exhibition_file.EXFNO
+        IN(SELECT MIN(EXFNO) FROM jang_exhibition_file
+        group by EXNO );
+-->
+
+        <!--  where
+          (jexhb.STDATE  <![CDATA[<]]> CURDATE()) and (jexhb.EDDATE <![CDATA[>]]> CURDATE())-->
+
+    </select>
+
+<!-- 상세보기-->
+    <select id="exhibitionSelect"  resultMap="exhibitionMap">
+       <!-- select  * from jang_exhibition
+        where jang_exhibition.EXNO=#{value};-->
+
+        select  * from jang_exhibition
+        left join jang_exhibition_file jef on jang_exhibition.EXNO = jef.EXNO
+        where jang_exhibition.EXNO=#{value};
+
+    </select>
+
+    <insert id="exhibitionInsert"  parameterType="exhibition"
+            useGeneratedKeys="true" keyColumn="exno" keyProperty="exno">
+
+        INSERT INTO jangdb.jang_exhibition (exname, cont, plno, stdate, eddate, price)
+        values (#{exname}, #{cont}, -1, #{stdate}, #{eddate}, #{price})
+    </insert>
+
+    <delete id="delete">
+      <!--  delete from jang_exhibition_file
+        where jang_exhibition_file.EXNO=#{value};-->
+<!--
+        delete from jang_exhibition_review
+        where jang_exhibition_review.EXNO=#{value};-->
+
+     <!--   delete from jang_ticket
+        where jang_ticket.EXNO=#{value};
+        delete from jang_baguni
+        where jang_baguni.EXNO=#{value};-->
+        delete from jang_exhibition
+        where jang_exhibition.EXNO=#{value};
+    </delete>
+
+    <update id="update" parameterType="exhibition">
+        update jang_exhibition set
+        EXNAME= #{exname}, CONT= #{cont},
+       STDATE= #{stdate}, EDDATE= #{eddate},
+        PRICE= #{price}
+        where jang_exhibition.EXNO= #{exno}
+    </update>
+
+    <!-- 첨부파일 -->
+    <select id="findFilesByExhibition" resultMap="exhibitionFileMap">
+        select
+        exfno,
+        path,
+        exno,
+        fname
+        from
+        jang_exhibition_file
+        where
+        exno = #{exno}
+    </select>
+
+    <insert id="insertFiles" parameterType="exhibition" >
+        insert into jang_exhibition_file(path,exno,fname)
+        values
+        <foreach collection="exhibitionFiles" item="file" separator=",">
+            (#{file.path},#{exno},#{file.fname})
+        </foreach>
+    </insert>
+
+
+    <delete id="deleteFiles">
+        delete from jang_exhibition_file
+        where exno= #{value}
+    </delete>
+
+    <!--    <delete id="deleteFilesByMemberBoards">
+        delete from  jang_exhibition_file
+        where exno in (select bno from app_board where mno = #{value})
+    </delete>-->
+
+    <delete id="deleteFile">
+        delete from jang_exhibition_file
+        where exfno=#{value};
+    </delete>
+
+    <select id="findFileByNo" resultMap="exhibitionFileMap">
+        select
+        exfno,
+        path,
+        exno,
+        fname
+        from
+        jang_exhibition_file
+        where
+        exfno = #{value};
+    </select>
+
+    <!--총 게시글 갯수 출력-->
+    <select id="exhibitionCount"  resultType="int">
+        select count(*) from jang_exhibition
+    </select>
+
+    <select id="exhibitionLimitList" resultMap="exhibitionMap">
+        select
+        jang_exhibition.*,
+        jang_exhibition_file.*
+        from jang_exhibition
+        left join jang_exhibition_file
+        on
+        jang_exhibition.EXNO = jang_exhibition_file.EXNO
+        ORDER BY jang_exhibition.EXNO desc
+        LIMIT #{count}, #{number};
+    </select>
+
+
+
+</mapper>

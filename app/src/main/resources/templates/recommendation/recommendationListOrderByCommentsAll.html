@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>가보자GO</title>
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../css/main-base.css" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/main-modal.css" />
+
+    <script
+            src="https://code.jquery.com/jquery-3.6.1.js"
+            integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+            crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Herr+Von+Muellerhoff" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="../css/animate.css">
+
+    <link rel="stylesheet" href="../css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="../css/magnific-popup.css">
+
+    <link rel="stylesheet" href="../css/aos.css">
+
+    <link rel="stylesheet" href="../css/ionicons.min.css">
+
+    <link rel="stylesheet" href="../css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="../css/jquery.timepicker.css">
+
+
+    <link rel="stylesheet" href="../css/flaticon.css">
+    <link rel="stylesheet" href="../css/icomoon.css">
+    <link rel="stylesheet" href="../css/jiminstyle-all.css">
+
+
+</head>
+
+<!-- Header-->
+<header class="bg-dark py-4">
+
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h3 class="display-4 fw-bolder"
+                style="color: white; font-weight: normal">
+                가보자GO 코스추천글
+            </h3>
+        </div>
+    </div>
+</header>
+
+
+<body class="pt-5">
+
+<div class="modal">
+    <div class="modal_body" style=" background: rgba(255,255,255,0.9); ">
+        <div class="out" style="margin: 05px;  float: right;">나가기</div>
+        <br>
+        <h2 style=" text-align: center;"> 로그인 </h2>
+
+        <form action="../auth/login" method="post" >
+            <p>ID</p>
+            <input name="id" type="text" size="30" placeholder="ID를 입력해주세요." th:value="${id}">
+            <br> <!--공백-->
+            <p>Password</p>
+            <input name="password" type="password" size="20" placeholder="Password를 입력해주세요.">
+            <br>
+            <br> <!--공백-->
+            <button class="btn_login" type="submit"
+                    style="background-color: #ffca2c">Login</button>
+
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+            <script>
+                function signOut() {
+                    var auth2 = gapi.auth2.getAuthInstance();
+                    auth2.signOut().then(function () {
+                        console.log('User signed out.');
+                    });
+                }
+            </script>
+
+
+            <div class="savecheck">
+                <input id="savecheckbox" type="checkbox" name="saveEmail"><label for="savecheckbox">&nbsp;ID 저장</label>
+                <span><a href="/app/member/findid">ID 찾기</a></span><span> / </span><span><a href="/app/member/findpwd">Password 찾기</a></span>
+            </div>
+        </form>
+
+        <form action="auth/register">
+            <button class="btn_signin" type="submit"
+                    style="background-color: #ffca2c">회원가입</button>
+        </form>
+    </div>
+</div>
+
+<!-- Navigation 사실상의 header -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/app">가보자GO</a>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item"><a class="nav-link" href="#">Search</a></li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/app/recommendation/recommendationList">코스추천
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="/app/exhibition/exhibitionlist">전시회
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/app/support/">고객지원</a>
+                </li>
+                <li class="nav-item" th:if="${session.loginMember != null}">
+                    <a class="nav-link"
+                            href="/app/auth/logout"
+                            th:text="${session.loginMember.name}+'(로그아웃)'">홍길동(로그아웃)</a>
+                </li>
+                <li class="nav-item" th:if="${session.loginMember == null}">
+                    <span class="nav-link btn-open-popup">로그인</span>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/app/myPage/">
+                        <img src="/app/images/mypage.png" width="90%" height="25"
+                        /></a>
+                </li>
+
+                <!--어드민만 보일 수 있음-->
+                <li class="nav-item">
+              <span data-th-if="${session.loginMember} != null and ${session.loginMember.id} == 'admin'">
+              <a class="nav-link" href='/app/member/list'>회원 관리</a></span> </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="colorlib-page">
+    <div id="colorlib-main">
+
+<!--댓글순-->
+<section class="py-5 " id="section2" style=" width: 100%;">
+
+    <div class="container  px-4 px-lg-5 mt-5" >
+
+        <section class="ftco-bread py-6">
+            <div class="container">
+                <div class="slider-text justify-content-center align-items-center">
+                    <div class="col-md-11 ftco-animate">
+                        <p class="breadcrumbs">
+                                    <span class="mr-2">
+                                        <a href="recommendationList"
+                                           style="color: grey; font-weight: bold;">코스추천메인</a>
+                                    </span>
+                            <span>
+                                        <a href="recommendationForm"
+                                           data-th-if="${session.loginMember} != null"
+                                           style="color: grey; font-weight: bold;">코스추천 글쓰기</a>
+                                    </span>
+                        </p>
+                        <h1 class="bread">댓글순</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+        <!--댓글순 리스트 시작-->
+    <div class="container  px-4 px-lg-5 mt-5" >
+        <div class="row  gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 ">
+            <div style="padding: 10px"
+                 data-th-each="recommendation : ${recommendationsOrderByComments}">
+
+                <div class="card h-100"
+                     style= "background: rgba(0,0,0,0.7);
+                                border-radius: 13px;">
+
+                    <h3></h3>
+
+                    <!-- Product image 첨부파일 갤러리화 -->
+                    <div th:if="${recommendation.path != null}" style="text-align : center;">
+                        <img data-th-src="${'../board/files/'+ recommendation.path}"
+                             width="230"
+                             height="230"/>
+                    </div>
+                    <div th:if="${recommendation.path == null}" style="text-align : center;">
+                        <img src="https://img.freepik.com/free-photo/downtown-cityscape-at-night-in-seoul-south-korea_335224-272.jpg" alt="서울 사진"
+                             width="230"
+                             height="230"
+                        />
+                    </div>
+
+                    <!-- 전시 제목,날짜 정렬-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+
+                            <!-- 전시 name-->
+                            <h5>
+                                <a href='recommendationDetail?recono=1'
+                                   data-th-href="@{recommendationDetail(recono=${recommendation.recono})}"
+                                   data-th-text="${recommendation.title == ''} ? '(제목없음)' : ${recommendation.title}"
+                                   style="word-wrap: break-word"
+                                >제목rlfldsdfasdfasdf</a>
+                            </h5>
+                            <br>
+                            <td data-th-text="${recommendation.wdate}"  >2022-1-1</td>
+                        </div>
+                    </div>
+
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto"  data-th-href="@{recommendationDetail(recono=${recommendation.recono})}"
+                               style="color: #E0EBFF">보러가기</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <br>
+    <br>
+
+    <!--코스추천글 페이징 시작-->
+    <section class="ftco-section ">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="block-27">
+                        <ul>
+                            <li class="bt-color">
+                                <a th:if="${prev}==true"
+                                   data-th-href="@{recommendationListOrderByCommentsAll(page=${pageStart - 1})}"
+                                   th:text="'<'">1
+                                </a>
+                            </li>
+
+                        <li>
+                            <th:block class="page-item" data-th-each="pNum : ${#numbers.sequence(pageStart, pageEnd)}">
+                                        <a data-th-href="@{recommendationListOrderByCommentsAll(page=${pNum})}"
+                                           th:text="${pNum}">1
+                                        </a>
+                            </th:block>
+                        </li>
+
+                        <li>
+                            <a th:if="${next}==true"
+                               data-th-href="@{recommendationListOrderByCommentsAll(page=${pageEnd + 1})}"
+                               th:text="'>'">1
+                            </a>
+                        </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<!--코스추천글 리스트 끝-->
+
+
+<!--<div style="position: absolute; right: 0px; bottom: 0px;">-->
+
+<div style="position: fixed; right: 10px; bottom: 280px;">
+    <button type="button" class="btn btn-secondary"
+            id = go-top >위로</button></div>
+
+
+<script>
+    $(document).ready(function () {
+
+        // 1. 특정 위치에서 부터 버튼 나타고, 사라지게..효과는 fade로
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 200) {
+                $('#go-top').fadeIn(200);
+            } else {
+                $('#go-top').fadeOut(200);
+            }
+        });
+
+        // 2. 버튼 클릭하면 원하는 위치로 이동
+        $('#go-top').click(function (event) {
+            event.preventDefault();
+            $('html, body').animate({ scrollTop: 0 }, 300);
+        });
+
+    });
+
+</script>
+
+
+<!-- Footer-->
+<footer>
+    <p>Copyright &copy;가보자GO</p>
+</footer>
+
+<style>
+    footer {
+        /* footer를 aside위에 올리기 위해 사용(부유객체) */
+        position: relative;
+        height: 70px;
+        width: 100%;
+        padding: 0 25px;
+        line-height: 60px;
+        color: white;
+        border-top: 1px solid #dee5e7;
+        background-color: #343A40;
+        margin-top:auto;
+        text-align:center;
+    }
+
+
+    .pt-5 {
+        background-color: white;
+        /*background-image: url(https://cdn.pixabay.com/photo/2019/07/03/09/41/national-history-museum-4314035_1280.jpg);*/
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 100vw;
+        height: 100vh;
+    }
+    /*
+        #E0EBFF*/
+</style>
+
+<style type="text/css">
+    section{color: #E0EBFF;}
+</style>
+
+
+<!--로그인창-->
+<script>
+    const body = document.querySelector("body");
+    const modal = document.querySelector(".modal");
+    const btnOpenPopup = document.querySelector(".btn-open-popup");
+
+    btnOpenPopup.addEventListener("click", () => {
+        modal.classList.toggle("show");
+
+        if (modal.classList.contains("show")) {
+            body.style.overflow = "hidden";
+        }
+    });
+
+    modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.classList.toggle("show");
+
+            if (!modal.classList.contains("show")) {
+                body.style.overflow = "auto";
+            }
+        }
+    });
+
+    $('.out').click(function() {
+        $('.modal').removeClass('show')
+    })
+
+</script>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery-migrate-3.0.1.min.js"></script>
+<script src="../js/popper.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery.easing.1.3.js"></script>
+<script src="../js/jquery.waypoints.min.js"></script>
+<script src="../js/jquery.stellar.min.js"></script>
+<script src="../js/owl.carousel.min.js"></script>
+<script src="../js/jquery.magnific-popup.min.js"></script>
+<script src="../js/aos.js"></script>
+<script src="../js/jquery.animateNumber.min.js"></script>
+<script src="../js/bootstrap-datepicker.js"></script>
+<script src="../js/jquery.timepicker.min.js"></script>
+<script src="../js/scrollax.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+<script src="../js/google-map.js"></script>
+<script src="../js/main.js"></script>
+</div><!-- END COLORLIB-MAIN -->
+</div><!-- END COLORLIB-PAGE -->
+</body>
+</html>
+
+
+

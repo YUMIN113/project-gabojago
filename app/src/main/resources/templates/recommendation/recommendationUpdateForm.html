@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="../css/main-base.css" />
+  <link rel="stylesheet" href="../css/main-modal.css" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/recommendation/recommendationForm.css" />
+  <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+  />
+  <title>가보자GO 코스추천_입력페이지</title>
+</head>
+<body class="pt-5">
+<!-- Navigation 사실상의 header -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/app">가보자GO</a>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item"><a class="nav-link" href="/app/search/searchForm">검색</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="/app/recommendation/recommendationList">코스추천</a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="/app/exhibition/exhibitionlist">전시회</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="/app/support/">고객지원</a>
+        </li>
+        <li class="nav-item" th:if="${session.loginMember != null}">
+          <a
+            class="nav-link"
+            href="/app/auth/logout"
+            th:text="${session.loginMember.name}+'(로그아웃)'">홍길동(로그아웃)</a>
+        </li>
+        <li class="nav-item" th:if="${session.loginMember == null}">
+          <span class="nav-link btn-open-popup">로그인</span>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/app/myPage/">
+            <img src="/app/images/mypage.png" width="90%" height="25"
+            /></a>
+        </li>
+
+        <!--어드민만 보일 수 있음-->
+        <li class="nav-item">
+              <span data-th-if="${session.loginMember} != null and ${session.loginMember.id} == 'admin'">
+              <a class="nav-link" href='/app/member/list'>회원 관리</a></span> </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- Navigation 사실상의 header 끝 -->
+
+
+  <div class="ga-content">
+
+    <form id="recommendation-form" action="recommendationUpdateConfirm" method="post" enctype="multipart/form-data">
+      <input class="ga-input-title" name="title" data-th-value="${recommendation.title}"
+             type="text" placeholder="제목을 입력해주세요."/>
+
+      <input type="hidden" name="recono" data-th-value="${recommendation.recono}" readonly>
+      <div class="ga-subdata">
+        <div class="ga-transport">
+          <span>* 추천 이동수단 : </span>
+          <select name="tpname">
+            <option value="도보" selected>도보</option>
+            <option value="자전거">자전거</option>
+            <option value="자차">자차</option>
+            <option value="대중교통">대중교통</option>
+          </select>
+        </div>
+        <div class="ga-petdata">
+          <span>* </span>
+          <input type="checkbox" name="pet" value="true"
+                                data-th-field="*{recommendation.pet}" data-th-value="${recommendation.pet}"/>
+          <span>반려동물 동반가능</span>
+        </div>
+
+        <div class="ga-checkdata">
+          <p id="ga-checkdata-title">* 함께해서 좋아요</p>
+          <input type='checkbox' name="frd" value="true" data-th-field="*{recommendation.frd}"
+                 data-th-value="${recommendation.frd}"/><span>친구</span>
+          <input type='checkbox' name="cple" value="true" data-th-field="*{recommendation.cple}"
+                 data-th-value="${recommendation.cple}"/><span>연인</span>
+          <input type='checkbox' name="fmly" value="true" data-th-field="*{recommendation.fmly}"
+                 data-th-value="${recommendation.fmly}"/><span>가족</span>
+          <input type='checkbox' name="solo" value="true" data-th-field="*{recommendation.solo}"
+                 data-th-value="${recommendation.solo}"/><span>혼자</span>
+        </div>
+      </div>
+
+      <datalist id="searchOptions"> </datalist>
+
+      <ul class="ga-filecont" id="addTable">
+        <li class="ga-copied-form">
+          <input name="place1" class="ga-input-box1" type="text"
+                 data-th-value="${jangSoReviews.size > 0} ? ${jangSoReviews[0].plname + ', ' + jangSoReviews[0].adrs} : '' "
+                 placeholder=" 검색: 장소명, 장소 주소" list="searchOptions"/>
+          <button id="place-add-btn1" class="ga-place-select" type="button">코스확정</button>
+          <input id="ga-files1" name="files1" type="file" multiple />
+          <label class="ga-files-label" for="ga-files1">사진추가</label>
+          <textarea class="ga-upload-namebox" placeholder=" 첨부파일"
+                    data-th-text="${jangSoReviews.size > 0} ?
+                    (${jangSoReviews[0].attachedFiles.size != 0} ?
+                    ${jangSoReviews[0].attachedFiles[0].fname} + ' 외 '
+                    + ${jangSoReviews[0].attachedFiles.size - 1} + '개 파일' : '') : ''"
+                    readonly></textarea>
+          <textarea class="ga-cont-box" name="cont1"
+                    data-th-text="${jangSoReviews.size > 0} ? ${jangSoReviews[0].cont} : ''"
+                    placeholder=" 해당 장소에 대하여 설명을 적어주세요."></textarea>
+        </li>
+        <hr class="ga-hr-line">
+
+        <li class="ga-copied-form">
+          <input name="place2" class="ga-input-box2" type="text"
+                 data-th-value="${jangSoReviews.size > 1} ? ${jangSoReviews[1].plname + ', ' + jangSoReviews[1].adrs} : '' "
+                 placeholder=" 검색: 장소명, 장소 주소" list="searchOptions" size="60"/>
+          <button id="place-add-btn2" class="ga-place-select" type="button">코스확정</button>
+          <input id="ga-files2" name="files2" type="file" multiple />
+          <label class="ga-files-label" for="ga-files2">사진추가</label><br>
+          <textarea class="ga-upload-namebox" placeholder=" 첨부파일"
+                    data-th-text="${jangSoReviews.size > 1} ?
+                    (${jangSoReviews[1].attachedFiles.size != 0} ?
+                    ${jangSoReviews[1].attachedFiles[0].fname} + ' 외 '
+                    + ${jangSoReviews[1].attachedFiles.size - 1} + '개 파일' : '') : ''"
+                    readonly></textarea>
+          <textarea class="ga-cont-box" name="cont2"
+                    data-th-text="${jangSoReviews.size > 1} ? ${jangSoReviews[1].cont} : ''"
+                    placeholder=" 해당 장소에 대하여 설명을 적어주세요."></textarea>
+        </li>
+        <hr class="ga-hr-line">
+
+        <li class="ga-copied-form">
+          <input name="place3" class="ga-input-box3" type="text"
+                 data-th-value="${jangSoReviews.size > 2} ? ${jangSoReviews[2].plname + ', ' + jangSoReviews[2].adrs} : '' "
+                 placeholder=" 검색: 장소명,장소 주소" list="searchOptions" size="60"/>
+          <button id="place-add-btn3" class="ga-place-select" type="button">코스확정</button>
+          <input id="ga-files3" name="files3" type="file" multiple />
+          <label class="ga-files-label" for="ga-files3">사진추가</label><br>
+          <textarea class="ga-upload-namebox" placeholder=" 첨부파일"
+                    data-th-text="${jangSoReviews.size > 2} ?
+                    (${jangSoReviews[2].attachedFiles.size != 0} ?
+                    ${jangSoReviews[2].attachedFiles[0].fname} + ' 외 '
+                    + ${jangSoReviews[2].attachedFiles.size - 1} + '개 파일' : '') : ''"
+                    readonly></textarea>
+          <textarea class="cont3 ga-cont-box" name="cont3"
+                    data-th-text="${jangSoReviews.size > 2} ? ${jangSoReviews[2].cont} : ''"
+                    placeholder=" 해당 장소에 대하여 설명을 적어주세요."></textarea>
+        </li>
+        <hr class="ga-hr-line">
+
+        <li class="ga-copied-form">
+          <input name="place4" class="ga-input-box4" type="text"
+                 data-th-value="${jangSoReviews.size > 3} ? ${jangSoReviews[3].plname + ', ' + jangSoReviews[3].adrs} : '' "
+                 placeholder=" 검색: 장소명, 장소 주소" list="searchOptions" size="60"/>
+          <button id="place-add-btn4" class="ga-place-select" type="button">코스확정</button>
+          <input id="ga-files4" name="files4" type="file" multiple />
+          <label class="ga-files-label" for="ga-files4">사진추가</label><br>
+          <textarea class="ga-upload-namebox" placeholder=" 첨부파일"
+                    data-th-text="${jangSoReviews.size > 3} ?
+                    (${jangSoReviews[3].attachedFiles.size != 0} ?
+                    ${jangSoReviews[3].attachedFiles[0].fname} + ' 외 '
+                    + ${jangSoReviews[3].attachedFiles.size - 1} + '개 파일' : '') : ''"
+                    readonly></textarea>
+          <textarea class="cont4 ga-cont-box" name="cont4"
+                    data-th-text="${jangSoReviews.size > 3} ? ${jangSoReviews[3].cont} : ''"
+                    placeholder=" 해당 장소에 대하여 설명을 적어주세요."></textarea>
+        </li>
+        <hr class="ga-hr-line">
+
+        <li class="ga-copied-form">
+          <input name="place5" class="ga-input-box5" type="text"
+                 data-th-value="${jangSoReviews.size > 4} ? ${jangSoReviews[4].plname + ', ' + jangSoReviews[4].adrs} : '' "
+                 placeholder=" 검색: 장소명, 장소 주소" list="searchOptions" size="60"/>
+          <button id="place-add-btn5" class="ga-place-select" type="button">코스확정</button>
+          <input id="ga-files5" name="files5" type="file" multiple />
+          <label class="ga-files-label" for="ga-files5">사진추가</label><br>
+          <textarea class="ga-upload-namebox" placeholder=" 첨부파일"
+                    data-th-text="${jangSoReviews.size > 4} ?
+                    (${jangSoReviews[4].attachedFiles.size != 0} ?
+                    ${jangSoReviews[4].attachedFiles[0].fname} + ' 외 '
+                    + ${jangSoReviews[4].attachedFiles.size - 1} + '개 파일' : '') : ''"
+                    readonly></textarea>
+          <textarea class="cont5 ga-cont-box" name="cont5"
+                    data-th-text="${jangSoReviews.size > 4} ? ${jangSoReviews[4].cont} : ''"
+                    placeholder=" 해당 장소에 대하여 설명을 적어주세요."></textarea>
+        </li>
+        <hr class="ga-hr-line">
+      </ul>
+
+      <div class="ga-savecancel">
+        <p>
+          <button id="add-jang-so-review-btn" type="submit">저장</button>
+          <button><a href="recommendationList">취소</a></button>
+        </p>
+      </div>
+    </form>
+
+  </div>
+
+<!-- Footer-->
+<footer class="py-4 bg-dark">
+  <div class="container">
+    <p class="m-0 text-center text-white">Copyright &copy;가보자GO</p>
+  </div>
+</footer>
+
+
+<!--로그인 모달 창-->
+<div class="modal">
+  <div class="modal_body" style=" background: rgba(255,255,255,0.8); ">
+    <div class="out" style=" float: right;"><img src = "/app/images/X.png"></div>
+    <!--나가기-->
+    <br>
+    <h2 style=" text-align: center;"> 로그인 </h2>
+
+    <form action="/app/auth/login" method="post" >
+      <p>ID</p>
+      <input name="id" type="text" size="30" placeholder="ID를 입력해주세요." th:value="${id}">
+      <br> <!--공백-->
+      <p>Password</p>
+      <input name="password" type="password" size="20" placeholder="Password를 입력해주세요.">
+      <br>
+      <br> <!--공백-->
+      <button class="btn_login" type="submit"
+              style="background-color: #ffca2c">Login</button>
+
+      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+      <script>
+            function signOut() {
+              var auth2 = gapi.auth2.getAuthInstance();
+              auth2.signOut().then(function () {
+                console.log('User signed out.');
+              });
+            }
+          </script>
+
+      <div class="savecheck">
+        <input id="savecheckbox" type="checkbox" name="saveEmail"><label for="savecheckbox">&nbsp;ID 저장</label>
+        <span><a href="/app/member/findid">ID 찾기</a></span><span> / </span><span><a href="/app/member/findpwd">Password 찾기</a></span>
+      </div>
+    </form>
+
+    <form action="auth/register">
+      <button class="btn_signin" type="submit"
+              style="background-color: #ffca2c">회원가입</button>
+    </form>
+  </div>
+</div>
+
+
+<!--login modal script-->
+<script>
+      const body = document.querySelector("body");
+      const modal = document.querySelector(".modal");
+      const btnOpenPopup = document.querySelector(".btn-open-popup");
+
+      btnOpenPopup.addEventListener("click", () => {
+        modal.classList.toggle("show");
+
+        if (modal.classList.contains("show")) {
+          body.style.overflow = "hidden";
+        }
+      });
+
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          modal.classList.toggle("show");
+
+          if (!modal.classList.contains("show")) {
+            body.style.overflow = "auto";
+          }
+        }
+      });
+
+      // 장현경 : 로그인 모달 창 "나가기"
+      $('.out').click(function() {
+        $('.modal').removeClass('show')
+      })
+    </script>
+<!--로그인 모달 창 끝-->
+
+  <script src="/app/js/kakao.js"></script>
+
+</body>
+</html>

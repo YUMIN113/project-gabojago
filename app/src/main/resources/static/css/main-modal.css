@@ -1,0 +1,163 @@
+.container > .collapse > .navbar-nav > .nav-item > span {
+  cursor: pointer;
+}
+
+/* modal 기본 사양 */
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: none;
+
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal_body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 36%;
+  min-height: 85%;
+  
+  padding: 40px 40px 0px 40px;
+
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+  transform: translateX(-50%) translateY(-50%);
+}
+
+/* form 제목 */
+.modal_body h2 {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 60px;
+}
+
+/* login 폼 */
+.modal_body form {
+  position: relative;
+  left: 14%;
+  margin-bottom: 30px;
+}
+
+.modal_body > form > p {
+  font-size: 1.22vw;
+  color: gray;
+  margin-bottom: 1%;
+}
+
+.modal_body > form > input:nth-of-type(2) {
+  margin-bottom: 3%;
+}
+
+.modal_body .btn_login {
+  margin-bottom: 10px;
+  border-style: none;
+  background-color: #f9e000;
+  border-radius: 6px;
+  color: black;
+
+  width: 21.3vw;
+  height: 38px;
+}
+
+.modal_body .btn_login:hover {
+  cursor: pointer;
+  background-color: rgb(219, 243, 124);
+  transition: all .3s;
+}
+
+.modal_body #savecheckbox {
+  cursor: pointer;
+  position: relative;
+  top: 1px;
+}
+
+.modal_body .savecheck span {
+  position: relative;
+  left: 23%;
+  color: gray;
+  font-size: 1vw;
+}
+
+.modal_body .savecheck label {
+  color: gray;
+  font-size: 1vw;
+  cursor: pointer;
+}
+
+.modal input[type=text] {
+  padding-left: 3%;
+  width: 70%;
+  height: 40px;
+  margin-bottom: 15px;
+}
+
+.modal input[type=text]::placeholder {
+  font-size: 15px;
+}
+
+.modal input[type=password] {
+  padding-left: 3%;
+  width: 70%;
+  height: 40px;
+}
+
+.modal input[type=password]::placeholder {
+  font-size: 15px;
+}
+
+/* form 바깥 */
+.modal_body .loginimages {
+  margin-top: 50px;
+  width: 100%;
+  height: auto;
+}
+
+.modal_body .loginimages li {
+  width: 50%;
+  float: left;
+}
+
+.modal_body .loginimages li img {
+  width: 67.5%;
+  height: auto;
+  
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+.modal_body .loginimages li:nth-of-type(1) img {
+  margin-left: 62px;
+}
+
+.modal_body .btn_signin {
+  margin-top: 10px;
+
+  margin-bottom: 10px;
+  border-style: none;
+  background-color: #f9e000;
+  border-radius: 6px;
+  color: black;
+
+  width: 21.3vw;
+  height: 38px;
+}
+
+.modal_body .btn_signin:hover {
+  cursor: pointer;
+  background-color: rgb(219, 243, 124);
+  transition: all .3s;
+}

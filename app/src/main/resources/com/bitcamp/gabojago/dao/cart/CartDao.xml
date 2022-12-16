@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitcamp.gabojago.dao.cart.CartDao">
+    
+    <select id="getCartList" resultType="hashMap" parameterType="String">
+	  SELECT
+	    ba.ID,
+	    ba.CNT,
+	    ex.EXNO,
+	    ex.EXNAME,
+	    ex.STDATE,
+	    ex.EDDATE,
+    	ex.PRICE * ex.EXNO AS PRICE,
+    	ex_file.PATH
+	  FROM
+	    jang_baguni AS ba
+	    INNER JOIN
+	    jang_exhibition AS ex
+	    ON ba.EXNO = ex.EXNO
+	    INNER JOIN
+	    jang_exhibition_file AS ex_file
+	    ON ex.EXNO = ex_file.EXNO
+	  WHERE
+	  	ba.ID = #{value};
+    </select>
+    
+    <select id="getCheckedCartList" resultType="hashMap" parameterType="String">
+    SELECT
+      ba.ID,
+      ba.CNT,
+      ex.EXNO,
+      ex.EXNAME,
+      ex.STDATE,
+      ex.EDDATE,
+      ex.PRICE * ex.EXNO AS PRICE,
+      ex_file.PATH
+    FROM
+      jang_baguni AS ba
+      INNER JOIN
+      jang_exhibition AS ex
+      ON ba.EXNO = ex.EXNO
+      INNER JOIN
+      jang_exhibition_file AS ex_file
+      ON ex.EXNO = ex_file.EXNO
+    WHERE ba.ID = #{id} AND (
+      <trim prefixOverrides="OR">
+          <foreach item="exno" collection="array">
+              <trim prefix="OR">
+                  ex.EXNO = #{exno}
+              </trim>
+          </foreach>
+          );
+        </trim>
+    </select>
+    
+    <select id="getOrderingInfo" resultType="OrderingInformation" parameterType="String">
+    SELECT
+      *
+    FROM
+      jang_baguni
+    WHERE (
+      <trim prefixOverrides="OR">
+          <foreach item="exno" collection="array">
+              <trim prefix="OR">
+                  jang_baguni.EXNO = #{exno}
+              </trim>
+          </foreach>
+          );
+        </trim>
+    </select>
+    
+    <insert id="insertOrderingInfo"  useGeneratedKeys="true" parameterType="OrderingInformation">
+          INSERT INTO jang_ticket(ID, EXNO, CNT, PURDATE, PAYMENT, CCDATE) VALUES(#{id}, #{exno}, #{cnt}, #{purdate}, #{payment}, #{ccdate});
+    </insert>
+    
+    <insert id="addBaguni" parameterType="baguni">
+          INSERT INTO jang_baguni(ID, EXNO, CNT, ACT) VALUES (#{id}, #{exno}, #{cnt}, #{act});
+    </insert>
+    
+    <select id="getTicket" resultType="hashMap" parameterType="String">
+          SELECT
+      ex.EXNAME,
+      ex.PRICE * ti.CNT AS PRICE,
+      ti.PURDATE,
+      ti.PAYMENT,
+      ti.CCDATE,
+      ti.CRDATE
+    FROM
+      jang_exhibition as ex
+      INNER JOIN
+      jang_ticket as ti
+    ON
+      ex.EXNO = ti.EXNO
+    WHERE
+      ti.ID = #{value};
+    </select>
+    
+        <select id="getTicketDetail" resultType="hashMap" parameterType="String">
+          SELECT
+      ex.EXNAME,
+      ex.PRICE * ti.CNT AS PRICE,
+      ti.PURDATE,
+      ti.PAYMENT,
+      ti.CCDATE,
+      ti.CRDATE
+    FROM
+      jang_exhibition as ex
+      INNER JOIN
+      jang_ticket as ti
+    ON
+      ex.EXNO = ti.EXNO
+    WHERE
+      ti.ID = #{id} AND ti.EXNO = #{exno};
+    </select>
+    
+  <delete id="deleteBaguni" parameterType="String">
+    DELETE FROM jang_baguni WHERE (
+    <trim prefixOverrides="OR">
+          <foreach item="exno" collection="array">
+              <trim prefix="OR">
+                  ID = #{id} AND EXNO = #{exno}
+              </trim>
+          </foreach>
+          );
+        </trim>
+  </delete>
+    
+</mapper>
+

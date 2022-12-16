@@ -1,0 +1,121 @@
+plugins {
+  id 'org.springframework.boot' version '2.7.4'
+  id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+  id 'java'
+  id 'eclipse'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // spring-webmvc 관련 라이브러리
+    implementation ('org.springframework.boot:spring-boot-starter-web') {
+      exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+
+    // 카카오 맵 API 이용을 위한 라이브러리
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.6.4'
+    implementation 'org.jetbrains:annotations:15.0'
+    
+    // Undertow 서블릿 컨테이너
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+    
+    // spring-thymeleaf 관련 라이브러리
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    
+    // spring-jdbc 관련 라이브러리
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    
+    // mybatis-spring 관련 라이브러리
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+    
+    // mariadb jdbc driver 관련 라이브러리 
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    
+    // 개발 편이성을 제공하는 라이브러리 ==> 개발 완료 후 제거한다.
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    
+    // 단위테스트 관련 라이브러리
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+//    // 회원가입 시 이메일 인증 관련 라이브러리
+//    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.7.5'
+
+    // 내맘대로 추가하는 편의성 라이브러리
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    
+    // 프레임워크나 라이브러리 등에서 출력하는 로그를 다루는 라이브러리 -장현경
+    implementation 'org.apache.logging.log4j:log4j-core:2.18.0'
+
+    // 적은양의 코드만을 이용해 썸네일을 제작할 수 있고 가로 세로 사이즈를 결정하면 비율에 맞게 조정해 주는 기능 -장현경
+    implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.11'
+
+    // 소스 수정 저장 후 바로 적용 -장현경
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // 메일 보내는 의존- 장현경
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    //gson
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+    // implementation project(':app-common')
+}
+
+// 단위 테스트에 사용할 라이브러리를 지정한다.
+tasks.named('test') {
+  useJUnitPlatform()
+}
+
+// `gradle build`를 실행하여 배포 파일을 생성할 때 사용할 이름
+// 예) com.bitcamp.board.0.0.1-SNAPSHOT.jar
+group = 'com.bitcamp'
+version = '0.0.1-SNAPSHOT'
+
+// CLI 환경에서 자바 소스를 컴파일 할 때 적용할 옵션
+tasks.withType(JavaCompile) {
+    // 프로젝트의 소스 파일 인코딩을 gradle에게 알려준다.
+    // $javac -encoding UTF-8 ..
+    options.encoding = 'UTF-8' 
+
+    // 소스 파일을 작성할 때 사용할 자바 버전
+    sourceCompatibility = '11'
+
+    // 자바 클래스를 실행시킬 JVM의 최소 버전
+    targetCompatibility = '11'
+}
+
+// wrapper 문제 해결(정상 작동 확인 후, 삭제 가능) (유민)
+task wrapper(type: Wrapper) {
+    gradleVersion = '7.0'
+}
+
+// 오류 해결 (유민)
+tasks.register("prepareKotlinBuildScriptModel"){}
+
+// eclipse IDE에서 사용할 프로젝트 정보 설정하기
+eclipse {
+    project {
+        name = "gabojago"
+        // 프로젝트 이름을 지정하지 않으면 build.gradle 파일이 있는
+        // 폴더 이름을 프로젝트 이름으로 사용한다.
+    }
+    jdt {
+      //if you want to alter the java versions (by default they are configured with gradle java plugin settings):
+      sourceCompatibility = 11
+      targetCompatibility = 11
+      javaRuntimeName = "JavaSE-11"
+    }
+}
+
+
+
+
+
+
+

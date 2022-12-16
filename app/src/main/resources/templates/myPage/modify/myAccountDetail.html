@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <title>myAccountDetail</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+		  href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+
+    <script src="http://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Herr+Von+Muellerhoff" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../../app/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="../../../app/css/animate.css">
+    
+    <link rel="stylesheet" href="../../../app/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../../../app/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="../../../app/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="../../../app/css/aos.css">
+
+    <link rel="stylesheet" href="../../../app/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="../../../app/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="../../../app/css/jquery.timepicker.css">
+
+    
+    <link rel="stylesheet" href="../../../app/css/flaticon.css">
+    <link rel="stylesheet" href="../../../app/css/icomoon.css">
+    <link rel="stylesheet" href="../../../app/css/yuminstyle.css">
+
+	  <style>
+
+		  #colorlib-aside #colorlib-logo {
+			  width: 180px;
+			  height: 180px;
+			  -webkit-border-radius: 50%;
+			  -moz-border-radius: 50%;
+			  -ms-border-radius: 50%;
+			  border-radius: 50%;
+			  margin: 0 auto;
+			  margin-bottom: 10px;
+			  overflow: hidden;
+		  }
+		  .profile {
+			  width: 100%;
+			  height: 100%;
+			  object-fit: cover;
+		  }
+
+	  </style>
+
+
+	  <script type="text/javascript">
+
+		  // 비밀번호 중복 확인
+		  function checkPassword() {
+			  if(document.getElementById('password').value !=='' && document.getElementById('confirmPassword').value!=='') {
+				  if (document.getElementById('password').value === document.getElementById('confirmPassword').value) {
+					  document.getElementById('confirm').innerHTML = '비밀번호가 일치합니다.'
+					  document.getElementById('confirm').style.color = 'blue';
+				  } else {
+					  document.getElementById('confirm').innerHTML = '비밀번호가 일치하지 않습니다.';
+					  document.getElementById('confirm').style.color = 'red';
+				  }
+			  }
+		  }
+
+		  function checkBirthDay() {
+
+			  var birthDay = document.getElementById('birthDay').value;
+
+			  if (birthDay.length === 0) {
+
+				  swal({
+
+						  title: "생일을 입력해 주세요",
+						  icon: 'info'
+
+					  });
+
+					  return false;
+				  }
+
+			  return true;
+		  }
+
+		  // 비밀번호 입력 확인
+		  function identifyPassword() {
+			  var password = document.getElementById('password').value;
+			  var confirmPassword = document.getElementById('confirmPassword').value;
+
+			  if(password.length <= 0 || confirmPassword.length <= 0) {
+
+				  swal({
+
+					  title : "비밀번호를 입력해 주세요",
+					  icon : 'info'
+
+				      });
+				  return false;
+			  }
+
+			  if(password !== confirmPassword) {
+
+				  swal({
+
+					  title : "비밀번호가 일치하지 않습니다",
+					  icon : 'warning'
+
+				  });
+				  return false;
+			  }
+			  return true;
+		  }
+
+		  function modifyButtonLogic() {
+			  if (!identifyPassword()) return;
+			  if (!checkBirthDay()) return;
+			  document.querySelector("#myAccountModifyForm").submit();
+		  }
+
+	  </script>
+  </head>
+
+  <body>
+
+  <!--Header-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+	  <div class="container">
+		  <a class="navbar-brand" href="/app">가보자GO</a>
+		  <div class="collapse navbar-collapse" id="navbarResponsive">
+			  <ul class="navbar-nav ml-auto">
+
+				  <li class="nav-item"><a class="nav-link" href="/app/search/searchForm">검색</a></li>
+				  <li class="nav-item">
+					  <a class="nav-link" href="/app/recommendation/recommendationList">코스추천</a>
+				  </li>
+				  <li class="nav-item"><a class="nav-link" href="/app/exhibition/exhibitionlist">전시회</a></li>
+				  <li class="nav-item">
+					  <a class="nav-link" href="/app/support/">고객지원</a>
+				  </li>
+				  <li class="nav-item active" th:if="${session.loginMember != null}">
+					  <a
+							  class="nav-link"
+							  href="/app/auth/logout"
+							  th:text="${session.loginMember.name}+'(로그아웃)'">홍길동(로그아웃)</a>
+				  </li>
+				  <li class="nav-item" th:if="${session.loginMember == null}">
+					  <span class="nav-link btn-open-popup">로그인</span>
+				  </li>
+
+				  <li class="nav-item active">
+					  <a class="nav-link" href="/app/myPage/">
+						  <img src="/app/images/mypage.png" width="90%" height="25"
+						  /></a>
+				  </li>
+
+				  <!--어드민만 보일 수 있음-->
+				  <li class="nav-item">
+              <span data-th-if="${session.loginMember} != null and ${session.loginMember.id} == 'admin'">
+              <a class="nav-link" href='/app/member/list'>회원 관리</a></span> </li>
+			  </ul>
+		  </div>
+	  </div>
+  </nav>
+  <!-- Header End -->
+
+  <div id="colorlib-page">
+
+	  <aside id="colorlib-aside" role="complementary" class="js-fullheight text-center">
+		  <h1 id="colorlib-logo"><span><img class="profile" th:src="@{/board/files/} + ${member.profileFig}"/></span></h1>
+		  <div><h6 style="color: black; font-weight: bold; font-size: xx-large;" th:text="${member.nickName}"></h6></div>
+		  <nav id="colorlib-main-menu" role="navigation">
+			  <ul class="pt-4 pl-0 pr-0">
+				  <li><a th:href="@{/myPage/}">About Me</a></li>
+				  <li><a th:href="@{/myPage/myRecommendation/myRecommendationListPage?page=1}">My Recommendation</a></li>
+				  <li><a th:href="@{/myPage/myComments/myRecommendationCommentListPage?page=1}">My Comments</a></li>
+				  <li><a href="../../payment/showCart">Shopping Bag</a></li>
+				  <li><a href="../../payment/showOrderingInfo">My Purchase</a></li>
+				  <br>
+				  <li><a th:href="@{/myPage/modify/profileDetail}">My Profile</a></li>
+				  <li class="colorlib-active"><a th:href="@{/myPage/modify/myAccountDetail}">My Account</a></li>
+			  </ul>
+		  </nav>
+
+	  </aside> <!-- END COLORLIB-ASIDE -->
+	  <div id="colorlib-main">
+		  <section class="ftco-section ftco-bread">
+			  <div class="container pl-1 pt-4" >
+				  <div class="slider-text justify-content-center align-items-center">
+					  <div class="col-md-11 ftco-animate">
+						  <p class="breadcrumbs"><span class="mr-2"><a th:href="@{/myPage/}">About Me</a></span> <span>My Account</span></p>
+						  <h1 class="bread">My Account</h1>
+					  </div>
+				  </div>
+			  </div>
+		  </section>
+		  <section class="ftco-section contact-section pl-4 pr-5 pb-5 pt-4">
+
+			  <div class="row block-9">
+				  <div class="col-md-9 d-flex">
+
+
+					  <form action='myAccountUpdate' method="post" id="myAccountModifyForm" class="bg-white pl-4 pr-5 pb-5 pt-0 contact-form">
+
+						  <div class="form-group">
+							  <label>아이디</label>
+							  <input name='id' type='text' class="form-control"
+									 value='id'
+									 data-th-value="${member.id}"
+									 readonly>
+						  </div>
+
+						  <div class="form-group">
+							  <label>비밀번호 (필수)</label>
+							  <input name='password' id='password' type='password' class="form-control"
+									 value='password'
+									 data-th-value='${member.password}'
+									 placeholder="비밀번호를 입력해 주세요."
+									 onchange='checkPassword()'>
+						  </div>
+
+						  <div class="form-group">
+							  <label>비밀번호 확인 (필수)</label>
+							  <input name='confirmPassword' id='confirmPassword' type='password' class="form-control"
+									 value='confirmPassword'
+									 data-th-value='${member.password}'
+									 placeholder="비밀번호를 다시 입력해 주세요."
+									 onchange='checkPassword()'><span id="confirm"></span>
+						  </div>
+
+						  <div class="form-group">
+							  <label>이름</label>
+							  <input name='name' type='text' class="form-control"
+									 value='name'
+									 data-th-value='${member.name}'
+									 readonly>
+						  </div>
+
+						  <div class="form-group">
+							  <label>이메일</label>
+							  <input name='email' type='text' class="form-control"
+									 value='email'
+									 data-th-value='${member.email}'
+									 readonly>
+						  </div>
+
+						  <div class="form-group">
+							  <label>전화번호</label>
+							  <input name='phoneNo' type='text' class="form-control"
+									 value='phoneNo'
+									 data-th-value='${member.phoneNo}'
+									 placeholder="'-' 제외하고 입력해 주세요.">
+						  </div>
+
+						  <div class="form-group">
+							  <label>생일 (필수)</label>
+							  <input id="birthDay" name='birthDay' type='date' class="form-control"
+									 value='birthDay'
+									 data-th-value='${member.birthDay}'>
+						  </div>
+
+						  <div class="form-group">
+							  <label>성별</label><br>
+							  <select name="gender" id="gender">
+								  <option value="-" th:selected="${member.gender} == ${'-'}"}>-</option>
+								  <option value="F" th:selected="${member.gender} == ${'F'}"}>F</option>
+								  <option value="M" th:selected="${member.gender} == ${'M'}">M</option>
+							  </select>
+						  </div><br>
+
+						  <div class="text-center">
+				            <span><button class="w-25 btn btn-primary btn-lg"
+								          style="background-color: black; border-color: black"
+								          type="button"
+										  onclick="modifyButtonLogic();"
+					                      >modify</button>
+				            </span>
+
+						    <span><button class="w-25 btn btn-secondary btn-lg"
+										  style="background-color: black; border-color: black"
+										  type="button"
+										  th:onclick="|location.href='@{/myPage/modify/resignmemberform}'|"
+						           >탈퇴</button>
+						    </span>
+
+						  </div>
+
+					  </form>
+
+				  </div>
+			  </div>
+
+		  </section>
+	  </div><!-- END COLORLIB-MAIN -->
+  </div><!-- END COLORLIB-PAGE -->
+
+  <!-- Footer -->
+  <footer class="py-4 bg-dark">
+	  <div class="container">
+		  <p class="m-0 text-center text-white">Copyright &copy;가보자GO</p>
+	  </div>
+  </footer>
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="../../../app/js/jquery.min.js"></script>
+  <script src="../../../app/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="../../../app/js/popper.min.js"></script>
+  <script src="../../../app/js/bootstrap.min.js"></script>
+  <script src="../../../app/js/jquery.easing.1.3.js"></script>
+  <script src="../../../app/js/jquery.waypoints.min.js"></script>
+  <script src="../../../app/js/jquery.stellar.min.js"></script>
+  <script src="../../../app/js/owl.carousel.min.js"></script>
+  <script src="../../../app/js/jquery.magnific-popup.min.js"></script>
+  <script src="../../../app/js/aos.js"></script>
+  <script src="../../../app/js/jquery.animateNumber.min.js"></script>
+  <script src="../../../app/js/bootstrap-datepicker.js"></script>
+  <script src="../../../app/js/jquery.timepicker.min.js"></script>
+  <script src="../../../app/js/scrollax.min.js"></script>
+  <script src="../../../app/js/main.js"></script>
+
+
+  </body>
+</html>

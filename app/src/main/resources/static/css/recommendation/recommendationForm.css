@@ -1,0 +1,280 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style-type: none;
+}
+
+.ga-body {
+  background-color: #f5f5f5;
+}
+
+/* header footer 제외 콘텐츠 */
+.ga-content {
+  background-color: #f5f5f5;
+  padding-top: 13vh;
+}
+
+/* recommendation 제목 */
+.ga-input-title {
+  background-color: #f5f5f5;
+  border: none;
+  margin-bottom: 60px;
+  margin-left: 18%;
+
+  width: 50%;
+  height: 40px;
+  font-weight: bold;
+  font-size: 37px;
+}
+
+/* recommendation subdata 전체 */
+.ga-subdata {
+  margin-left: 18%;
+  background-color: white;
+  width: 60%;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+/* recommendation 이동수단 */
+.ga-transport > select {
+  border: none;
+  text-align: center;
+}
+
+.ga-transport {
+  margin-bottom: 12px;
+}
+
+.ga-transport > span {
+  margin-left: 4.3px;
+}
+
+/* pet체크박스 */
+.ga-petdata {
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.ga-petdata > span {
+  margin-left: 4px;
+}
+
+/* recommendation checkbox */
+.ga-checkdata > input, .ga-checkdata > p {
+  display: inline-block;
+}
+
+.ga-checkdata > p {
+  margin-left: 4.3px;
+}
+
+.ga-checkdata > input {
+  margin-left: 15px;
+}
+
+#ga-checkdata-title {
+  margin-bottom: 2px;
+  display: block;
+}
+
+.ga-checkdata > span {
+  margin-right: 4vw;
+  margin-left: 4px;
+}
+
+/* jangSoReview 전체 ul */
+.ga-filecont {
+  margin-left: 16%;
+  padding: 2%;
+  width: 64%;
+}
+
+/* jangSoReview 전체 ul중 li */
+.ga-copied-form {
+  background-color: white;
+  border-radius: 12px;
+  padding: 35px 0;
+  width: 100%;
+}
+
+.ga-inputbox-block {
+  width: 100%;
+}
+
+/* 검색란 */
+input[list=searchOptions] {
+  width: 70%;
+  margin-left: 1.3%;
+}
+
+/* 코스확정 버튼 */
+.ga-place-select {
+  background: #4843ab;
+  color: #fff;
+  border: none;
+
+  position: relative;
+  height: 30px;
+  padding: 0 1em;
+  cursor: pointer;
+  transition: 800ms ease all;
+  outline: none;
+}
+
+.ga-place-select:hover {
+  background: #fff;
+  color: #2f5ae4;
+}
+
+.ga-place-select:before, .ga-place-select:after {
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #4843ab;
+  transition:400ms ease all;
+}
+
+.ga-place-select:after {
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+
+.ga-place-select:hover:before, .ga-place-select:hover:after {
+  width:100%;
+  transition:800ms ease all;
+}
+
+/* 파일선택 버튼 숨기기 */
+#ga-files1 {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+#ga-files2 {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+#ga-files3 {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+#ga-files4 {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+#ga-files5 {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* 사진추가 라벨 css */
+.ga-files-label {
+  line-height: 30px;
+
+  color: #fff;
+  background-color: #999999;
+  border: none;
+
+  position: relative;
+  height: 30px;
+  padding: 0 1em;
+
+  cursor: pointer;
+  transition: 800ms ease all;
+  outline: none;
+}
+
+.ga-files-label:hover {
+  background: #fff;
+  color: #2f5ae4;
+}
+
+/* 추가된 사진 이름 textarea */
+.ga-upload-namebox {
+  background-color: rgb(216,216,216);
+  padding-left: 1%;
+  padding-top: 0.5%;
+  margin-left: 1.3%;
+  margin-right: 1%;
+  width: 37.5%;
+  height: 350px;
+  resize: none;
+}
+
+/* 각 장소설명 textarea */
+.ga-cont-box {
+  background-color: #f5f5f5;
+  padding-left: 0.7%;
+  padding-top: 0.7%;
+  width: 58%;
+  height: 350px;
+  resize: none;
+}
+
+/* 가로 구분선 */
+.ga-hr-line {
+  background-color: #D6E6F2;
+  height: 0.8px;
+}
+
+/* 저장버튼 & 취소 */
+.ga-savecancel {
+  margin-left: 69.5%;
+  position: relative;
+  bottom: 50px;
+}
+
+/* 저장버튼 */
+.ga-savecancel > p > button:nth-of-type(1) {
+  background: #4843ab;
+  color: #fff;
+  border: none;
+
+  position: relative;
+  height: 30px;
+  padding: 0 1em;
+  cursor: pointer;
+  transition: 800ms ease all;
+  outline: none;
+}
+
+/* 취소버튼 */
+.ga-savecancel > p > button:nth-of-type(2) {
+  background: #999999;
+  color: #fff;
+  border: none;
+
+  position: relative;
+  height: 30px;
+  padding: 0 1em;
+  cursor: pointer;
+  transition: 800ms ease all;
+  outline: none;
+}
+
+.ga-savecancel > p > button:nth-of-type(2) > a {
+  color: #fff;
+}

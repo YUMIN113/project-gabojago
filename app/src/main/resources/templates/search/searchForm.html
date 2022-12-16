@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>가보자GO</title>
+    <meta name="description" content="초기 메인페이지" />
+    <link rel="stylesheet" href="./css/main-base.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/main-modal.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <script src="./script/jquery-3.6.0.js"></script>
+    <script src="./script/script.js"></script>
+
+    <meta name ="google-signin-client_id"
+          content="400828157542-5kee4rg9u2va7k0c5q762jqnl973c4dv.apps.googleusercontent.com">
+
+
+  </head>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+  <body class="pt-5">
+    <!-- body 이름 바꿈 -->
+
+
+    <div class="modal">
+      <div class="modal_body">
+        <h2>Sign In</h2>
+        <form action="auth/login" method="post">
+          <p>ID</p>
+          <input name="id" type="text" size="30" placeholder="ID를 입력해주세요." th:value="${id}">
+          
+          <p>Password</p>
+          <input name="password" type="password" size="20" placeholder="Password를 입력해주세요.">
+          <br>
+          <button class="btn_login" type="submit">Login</button>
+
+
+
+
+
+
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+          <script>
+            function onSignIn(googleUser) {
+              var profile = googleUser.getBasicProfile();
+              console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+              console.log('Name: ' + profile.getName());
+              console.log('Image URL: ' + profile.getImageUrl());
+              console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            }
+
+          </script>
+
+          <a href="#" onClick="signOut();">Sign out</a>
+          <script>
+            function signOut() {
+              var auth2 = gapi.auth2.getAuthInstance();
+              auth2.signOut().then(function () {
+                console.log('User signed out.');
+              });
+            }
+          </script>
+
+          <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+
+
+
+
+
+
+
+          <div class="savecheck">
+            <input id="savecheckbox" type="checkbox" name="saveEmail"><label for="savecheckbox">&nbsp;ID 저장</label>
+            <span><a href="#">ID 찾기</a></span><span> / </span><span><a href="#">Password 찾기</a></span>
+          </div>
+        </form>
+
+        <!--
+        <div class="loginimages">
+          <ul>
+            <li>
+
+              <a href="#">
+                <img src="./images/googlebtn.png" alt="google login button">
+              </a>
+
+            </li>
+            <li>
+              <a href="#">
+                <img src="./images/naverbtn.png" alt="naver login button">
+              </a>
+            </li>
+          </ul>
+        </div>
+         -->
+
+        <form action="auth/register">
+          <button class="btn_signin" type="submit">회원가입</button>
+        </form>
+
+      </div>
+    </div>
+
+      <!-- Navigation 사실상의 header -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="/app">가보자GO</a>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+
+              <li class="nav-item"><a class="nav-link" href="/app/search/searchForm">검색</a></li>
+              <li class="nav-item">
+                <a class="nav-link" href="/app/recommendation/recommendationList">코스추천</a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="/app/exhibition/exhibitionlist">전시회</a></li>
+              <li class="nav-item">
+                <a class="nav-link" href="/app/support/">고객지원</a>
+              </li>
+              <li class="nav-item" th:if="${session.loginMember != null}">
+                <a
+                  class="nav-link"
+                  href="/app/auth/logout"
+                  th:text="${session.loginMember.name}+'(로그아웃)'">홍길동(로그아웃)</a>
+              </li>
+              <li class="nav-item" th:if="${session.loginMember == null}">
+                <span class="nav-link btn-open-popup">로그인</span>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/app/myPage/">
+                  <img src="/app/images/mypage.png" width="90%" height="25"
+                /></a>
+              </li>
+
+              <!--어드민만 보일 수 있음-->
+              <li class="nav-item">
+              <span data-th-if="${session.loginMember} != null and ${session.loginMember.id} == 'admin'">
+              <a class="nav-link" href='/app/member/list'>회원 관리</a></span> </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      
+
+    <script>
+    function Checkform(){     
+      if(search.keyword.value.length <= 1){
+        alert("검색어는 한 글자 이상이어야 합니다.");
+        search.keyword.focus();
+        return false;
+      }
+      
+      return true;
+    }
+    </script>
+    
+	<form style="padding: 20px" name = "search" action="searchResult" method="get" onSubmit="return Checkform()">
+		  <input name="keyword" type="text" class="border border-primary">
+		  <input class="btn btn-primary" type="submit">
+	</form>
+    
+    <!-- Footer-->
+    <footer class="py-4 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy;가보자GO</p>
+      </div>
+    </footer>
+    
+    <script>
+      const body = document.querySelector("body");
+      const modal = document.querySelector(".modal");
+      const btnOpenPopup = document.querySelector(".btn-open-popup");
+
+      btnOpenPopup.addEventListener("click", () => {
+        modal.classList.toggle("show");
+
+        if (modal.classList.contains("show")) {
+          body.style.overflow = "hidden";
+        }
+      });
+
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          modal.classList.toggle("show");
+
+          if (!modal.classList.contains("show")) {
+            body.style.overflow = "auto";
+          }
+        }
+      });
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>가보자GO</title>
+
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="../css/main-base.css" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/main-modal.css" />
+
+  <script
+      src="https://code.jquery.com/jquery-3.6.1.js"
+      integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+      crossorigin="anonymous"></script>
+
+
+</head>
+
+<!-- Header-->
+<header class="bg-dark py-2">
+  <div class="container px-3 px-lg-5 my-5">
+    <div class="text-center text-white">
+      <h2 class="display-5 fw-bolder">가보자GO 전시회</h2>
+    </div>
+  </div>
+</header>
+
+
+<body class="background">  <!--class="pt-5"-->
+<!-- Navigation 사실상의 header -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/app">가보자GO</a>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item"><a class="nav-link" href="/app/search/searchForm">검색</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="/app/recommendation/recommendationList">코스추천</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/app/exhibition/exhibitionlist">전시회
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/app/support/">고객지원</a>
+        </li>
+        <li class="nav-item" th:if="${session.loginMember != null}">
+          <a
+              class="nav-link"
+              href="/app/auth/logout"
+              th:text="${session.loginMember.name}+'(로그아웃)'">홍길동(로그아웃)</a>
+        </li>
+        <li class="nav-item" th:if="${session.loginMember == null}">
+          <span class="nav-link btn-open-popup">로그인</span>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/app/myPage/">
+            <img src="/app/images/mypage.png" width="90%" height="25"
+            /></a>
+        </li>
+        <!--어드민만 보일 수 있음-->
+        <li class="nav-item">
+              <span data-th-if="${session.loginMember} != null and ${session.loginMember.id} == 'admin'">
+              <a class="nav-link" href='/app/member/list'>회원 관리</a></span> </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<ul class="nav justify-content-end" >
+  <div class="nav-item" style="float: right; margin-top: 20px; width: 15%;">
+    <button type='submit' class="btn btn-outline-secondary"
+            data-th-if="${session.loginMember} != null and ${session.loginMember.id} == 'admin'">
+      <a class="nav-link active" aria-current="page" href="form"
+       style="color: #ffffff">전시회 글쓰기</a></button>
+  </div>
+
+  <div class="nav-item" style="float: right; margin-top: 20px; width: 15%;">
+   <button type='submit' class="btn btn-outline-secondary">
+     <a class="nav-link"  href="/app" style="color: #ffffff; ">메인</a></button>
+  </div>
+</ul>
+
+
+<section class="py-5 " style=" width: 100%;">
+
+  <div class="container  px-4 px-lg-5 mt-5" >
+    <div class="row  gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 ">
+      <div class="col mb-5" data-th-each="exhibition : ${exhibitions}">
+
+        <div class="card h-100"
+             style= "background: rgba(0,0,0,0.7); "><!--#FFFFFF50-->
+
+          <td data-th-text="${exhibition.exno}">100</td>
+
+          <!--  첨부파일 갤러리화 -->
+          <img th:src="@{/board/files/}+
+                ${exhibition.getExhibitionFiles().size()>0? exhibition.exhibitionFiles.get(0).path:''}"
+          onerror="this.src='https://cdn.pixabay.com/photo/2015/04/21/21/12/room-733785_960_720.jpg'"
+          style="height: 155px;"/>
+          
+          <!-- 전시 제목,날짜 정렬-->
+          <div class="card-body p-4">
+            <div class="text-center">
+
+              <!-- 전시 name-->
+              <h5>
+                <a href='detail?exno=1'
+                   data-th-href="@{detail(exno=${exhibition.exno})}"
+                   data-th-text="${exhibition.exname == ''} ? '(제목없음)' : ${exhibition.exname}"
+                   style="word-wrap: break-word"
+                >제목</a>
+              </h5>
+              <br>
+              <td data-th-text="${exhibition.stdate}"  >2022-1-1</td>
+              <td data-th-text="${exhibition.eddate}">2022-1-1</td>
+            </div>
+          </div>
+
+          <!-- 전시회 보러가기 actions-->
+          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center">
+              <a class="btn btn-outline-dark mt-auto"  data-th-href="@{detail(exno=${exhibition.exno})}"
+                 style="color: #E0EBFF">보러가기</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+  </div>
+  </div>
+</section>
+
+<div class="container d-flex justify-content-center">
+  <ul class="pagination"  >
+    <li class="page-item " ><a class="page-link" data-th-href="${'?count=1'}">처음으로</a></li>
+
+    <li class="page-item" data-th-if="${count>4}">
+      <a class="page-link" data-th-href="${'?count=' + count/5*5}" >이전</a></li>
+
+    <!--th:classappend="${count}+1==${num}? 'active':''" : 현재 페이지에 대한 색 처리-->
+    <li class="page-item" th:classappend="${count}+1==${num}? 'active':''" data-th-each="num: ${#numbers.sequence(count/5*5+1,count/5*5+5<totalNumber+1? count/5*5+5:totalNumber+1)}">
+      <a class="page-link" data-th-href="${'?count=' + num}" data-th-text="${num}">1</a></li>
+
+    <li class="page-item" data-th-if="${count<totalNumber/5*5}">
+      <a class="page-link" data-th-href="${'?count=' + ((count/5+1)*5+1)}">다음</a>
+
+    <li class="page-item"><a class="page-link" data-th-href="${'?count='+(totalNumber+1)}">끝으로</a></li>
+  </ul>
+</div>
+
+
+
+<br>
+<br>
+<div style="position: fixed; right: 10px; bottom: 280px;">
+<button type="button" class="btn btn-outline-secondary"
+        id = go-top >UP</button></div>
+
+  <!-- Footer-->
+  <footer>
+      <p>Copyright &copy;가보자GO</p>
+  </footer>
+
+  <style>
+    footer {
+      /* footer를 aside위에 올리기 위해 사용(부유객체) */
+      position: relative;
+      height: 70px;
+      width: 100%;
+      padding: 0 25px;
+      line-height: 60px;
+      color: white;
+      border-top: 1px solid #dee5e7;
+      background-color: #343A40;
+   margin-top:auto;
+      text-align:center;
+    }
+
+    /* // 백그라운드배경
+    https://cdn.pixabay.com/photo/2019/07/03/09/41/national-history-museum-4314035_1280.jpg)
+    https://images.pexels.com/photos/2425012/pexels-photo-2425012.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2
+    */
+    .background {
+      background-image: url(https://images.pexels.com/photos/3004909/pexels-photo-3004909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+
+<style type="text/css">
+  section{color: #E0EBFF;}
+</style>
+
+<!--로그인 모달 창-->
+<div class="modal">
+  <div class="modal_body" style=" background: rgba(255,255,255,0.8); ">
+    <div class="out" style="margin: 05px; float: right;"><img src = "/app/images/X.png"></div>
+    <br>
+    <h2 style=" text-align: center;"> 로그인 </h2>
+
+    <form action="/app/auth/login" method="post" >
+      <p>ID</p>
+      <input name="id" type="text" size="30" placeholder="ID를 입력해주세요." th:value="${id}">
+      <br> <!--공백-->
+      <p>Password</p>
+      <input name="password" type="password" size="20" placeholder="Password를 입력해주세요.">
+      <br>
+      <br> <!--공백-->
+      <button class="btn_login" type="submit"
+              style="background-color: #ffca2c">Login</button>
+      <br> <!--공백-->
+
+      <a href="/app/member/kakaoLoginPage">
+        <img src = "/app/images/kakao_login_medium_wide.png" class="btn_login">
+      </a>
+      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+      <script>
+        function signOut() {
+          var auth2 = gapi.auth2.getAuthInstance();
+          auth2.signOut().then(function () {
+            console.log('User signed out.');
+          });
+        }
+      </script>
+
+      <div class="savecheck">
+        <input id="savecheckbox" type="checkbox" name="saveEmail"><label for="savecheckbox">&nbsp;ID 저장</label>
+        <span><a href="/app/member/findid">ID 찾기</a></span><span> / </span><span><a href="/app/member/findpwd">Password 찾기</a></span>
+      </div>
+    </form>
+
+    <form action="auth/register">
+      <button class="btn_signin" type="submit"
+              style="background-color: #ffca2c">회원가입</button>
+    </form>
+  </div>
+</div>
+
+
+
+<!--로그인창-->
+<script>
+  const body = document.querySelector("body");
+  const modal = document.querySelector(".modal");
+  const btnOpenPopup = document.querySelector(".btn-open-popup");
+
+  btnOpenPopup.addEventListener("click", () => {
+    modal.classList.toggle("show");
+
+    if (modal.classList.contains("show")) {
+      body.style.overflow = "hidden";
+    }
+  });
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.classList.toggle("show");
+
+      if (!modal.classList.contains("show")) {
+        body.style.overflow = "auto";
+      }
+    }
+  });
+
+  // 장현경 : 로그인 모달 창 나가기
+  $('.out').click(function() {
+    $('.modal').removeClass('show')
+  })
+
+</script>
+
+<script>
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
+}
+</script>
+
+
+<script>/*위로 버튼*/
+  $(document).ready(function () {
+
+    // 1. 특정 위치에서 부터 버튼 나타고, 사라지게..효과는 fade로
+    $(window).scroll(function () {
+      if ($(this).scrollTop() > 200) {
+        $('#go-top').fadeIn(200);
+      } else {
+        $('#go-top').fadeOut(200);
+      }
+    });
+
+    // 2. 버튼 클릭하면 원하는 위치로 이동
+    $('#go-top').click(function (event) {
+      event.preventDefault();
+      $('html, body').animate({ scrollTop: 0 }, 300);
+    });
+
+  });
+</script>
+
+<style>
+  /*페이징 색상 변경*/
+  .page-link {
+    color: #999;
+    background-color: #000;
+    border-color: #444;
+  }
+
+  .page-item.active .page-link {
+    z-index: 1;
+    color: #ccc;
+    font-weight:bold;
+    background-color: #333;
+    border-color: #444;
+
+  }
+
+  .page-link:focus, .page-link:hover {
+    color: #ccc;
+    background-color: #222;
+    border-color: #444;
+  }
+</style>
+</body>
+</html>
+
+
+

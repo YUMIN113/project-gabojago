@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>가보자GO</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="../css/main-base.css" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/main-modal.css" />
+
+</head>
+<!-- Header-->
+<header class="bg-dark py-1">
+
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="text-center text-white">
+      <!-- <h1 class="display-4 fw-bolder">전시회 상세</h1>-->
+      <!--  <p class="lead fw-normal text-white-50 mb-0">?</p>-->
+    </div>
+  </div>
+</header>
+
+<body class="pt-5">
+
+<!-- Navigation 사실상의 header -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/app">가보자GO</a>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item"><a class="nav-link" href="/app/search/searchForm">검색</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="/app/recommendation/recommendationList">코스추천</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/app/exhibition/exhibitionlist">전시회
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/app/support/">고객지원</a>
+        </li>
+        <li class="nav-item" th:if="${session.loginMember != null}">
+          <a
+              class="nav-link"
+              href="/app/auth/logout"
+              th:text="${session.loginMember.name}+'(로그아웃)'">홍길동(로그아웃)</a>
+        </li>
+        <li class="nav-item" th:if="${session.loginMember == null}">
+          <span class="nav-link btn-open-popup">로그인</span>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/app/myPage/">
+            <img src="../images/mypage.png" width="90%" height="25"
+            /></a>
+        </li>
+        <!--어드민만 보일 수 있음-->
+        <li class="nav-item">
+              <span data-th-if="${session.loginMember} != null and ${session.loginMember.id} == 'admin'">
+              <a class="nav-link" href='/app/member/list'>회원 관리</a></span> </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+
+<div class="container">
+  <div class="py-5 text-right">
+    <button type='submit' class="btn btn-outline-secondary">
+      <a href='exhibitionlist'> 목록 </a> </button>
+  </div>
+
+
+<form action='update' method="post" enctype="multipart/form-data">
+  <table border='1'>
+
+
+
+    <div  style="float: right;">
+      <label>등록일 : </label>
+      <label data-th-text="${exhibition.wdate}"></label>
+    </div>
+
+    <div>
+      <label>No. </label>
+      <input name='exno' type='number'
+             value='1' data-th-value="${exhibition.exno}"
+             style="border: none;" readonly>
+    </div>
+    <br> <!--공백-->
+    <div>
+     <!-- <label for="exname">제목</label>-->
+      <input name='exname'  class="form-control"
+             type='text'  value='제목'
+              data-th-value='${exhibition.exname}'
+               size='60'>
+    </div>
+    <br> <!--공백-->
+
+
+
+    <div>
+      <label >시작날짜 : </label>
+      <input name='stdate' type='text'
+             value='2022-11-22'
+             data-th-value="${exhibition.stdate}"
+             size='20' style="border: none;">
+
+      <label >종료날짜 :</label>
+      <input name='eddate' type='text'
+             value='2022-11-22'
+             data-th-value="${exhibition.eddate}"
+             size='20' style="border: none;">
+    </div>
+    <br> <!--공백-->
+
+    <div>
+      <label style="width: 67px">금 액 : </label><input name='price' type='number'
+                            value='10000' data-th-value="${exhibition.price}"
+                            size='20' style="border: none;">
+    </div>
+
+    <br> <!--공백-->
+
+    <div>
+      <!--<th>내용</th>-->
+      <textarea name='cont'></textarea>
+    </div>
+    <br> <!--////공백////-->
+
+    <div style="float:right;">
+
+        <button type='submit' class="btn btn-outline-secondary">변경</button>
+
+        <a href='delete?exno=1'
+           data-th-href="@{delete(exno=${exhibition.exno})}">삭제</a>
+
+
+      <br> <!--////공백////-->
+
+    </div>
+  </table>
+
+  <br> <br>  <br>  <br> <!--공백-->
+</form>
+</div>
+
+
+
+  <!-- Footer-->
+  <footer>
+    <p>Copyright &copy;가보자GO</p>
+  </footer>
+
+
+
+  <style>
+    footer {
+      /* footer를 aside위에 올리기 위해 사용(부유객체) */
+      position: relative;
+      height: 70px;
+      width: 100%;
+      padding: 0 25px;
+      line-height: 60px;
+      color: white;
+      border-top: 1px solid #dee5e7;
+      background-color: #343A40;
+      margin-top:auto;
+      text-align:center;
+    }
+  </style>
+
+
+<!--로그인 모달 창-->
+<div class="modal">
+  <div class="modal_body" style=" background: rgba(255,255,255,0.8); ">
+    <div class="out" style="margin: 05px; float: right;"><img src = "/app/images/X.png"></div>
+    <br>
+    <h2 style=" text-align: center;"> 로그인 </h2>
+
+    <form action="/app/auth/login" method="post" >
+      <p>ID</p>
+      <input name="id" type="text" size="30" placeholder="ID를 입력해주세요." th:value="${id}">
+      <br> <!--공백-->
+      <p>Password</p>
+      <input name="password" type="password" size="20" placeholder="Password를 입력해주세요.">
+      <br>
+      <br> <!--공백-->
+      <button class="btn_login" type="submit"
+              style="background-color: #ffca2c">Login</button>
+      <br> <!--공백-->
+
+      <a href="/app/member/kakaoLoginPage">
+        <img src = "/app/images/kakao_login_medium_wide.png" class="btn_login">
+      </a>
+      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+      <script>
+        function signOut() {
+          var auth2 = gapi.auth2.getAuthInstance();
+          auth2.signOut().then(function () {
+            console.log('User signed out.');
+          });
+        }
+      </script>
+
+      <div class="savecheck">
+        <input id="savecheckbox" type="checkbox" name="saveEmail"><label for="savecheckbox">&nbsp;ID 저장</label>
+        <span><a href="/app/member/findid">ID 찾기</a></span><span> / </span><span><a href="/app/member/findpwd">Password 찾기</a></span>
+      </div>
+    </form>
+
+    <form action="auth/register">
+      <button class="btn_signin" type="submit"
+              style="background-color: #ffca2c">회원가입</button>
+    </form>
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function() {
+    $('textarea[name=cont]').html('[[${exhibition.cont}]]')
+    $('textarea[name=cont]').summernote({
+      height: 400,
+      disableDragAndDrop: true});
+  });
+
+  const body = document.querySelector("body");
+  const modal = document.querySelector(".modal");
+  const btnOpenPopup = document.querySelector(".btn-open-popup");
+
+  btnOpenPopup.addEventListener("click", () => {
+    modal.classList.toggle("show");
+
+    if (modal.classList.contains("show")) {
+      body.style.overflow = "hidden";
+    }
+  });
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.classList.toggle("show");
+
+      if (!modal.classList.contains("show")) {
+        body.style.overflow = "auto";
+      }
+    }
+  });
+</script>
+
+
+
+</body>
+</html>

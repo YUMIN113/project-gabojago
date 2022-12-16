@@ -1,0 +1,49 @@
+/* recommand */
+.recommand {
+  padding-top: 8vh;
+  padding-left: 5vw;
+}
+
+.recommand > p {
+  color: white;
+  font-size: 0.938vw;
+  margin-bottom: 1vh;
+}
+
+.recommand > h3 {
+  color: white;
+  font-size: 5.333vh;
+}
+
+.recommand > h3 > span {
+  display: block;
+}
+
+/* step1 */
+.step1 {
+  margin-top: 4vh;
+  padding-left: 5vw;
+}
+
+.step1 > h5 {
+  color: white;
+  font-size: 1.42vw;
+  margin-bottom: 1vh;
+}
+
+.step1 > ul {
+  width: 100%;
+  height: 34vh;
+}
+
+.step1 > ul > li {
+  width: 12vw;
+  height: auto;
+  float: left;
+  margin-right: 3.3vh;
+}
+
+.step1 > ul > li > a > img {
+  width: 100%;
+  height: auto;
+}

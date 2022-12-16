@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitcamp.gabojago.dao.EventDao">
+
+    <resultMap type="event" id="eventMap">
+        <id column="EVTNO" property="no"/>
+        <result column="TITLE" property="title"/>
+        <result column="CONT" property="content"/>
+        <result column="STDATE" property="startDate"/>
+        <result column="EDDATE" property="endDate"/>
+        <result column="PBL" property="disclosure"/>
+        <result column="EVCODE" property="eventCode"/>
+        <result column="ECOUNT" property="capacity"/>
+        <result column="WDATE" property="createdDate"/>
+        <result column="VCNT" property="viewCount"/>
+    </resultMap>
+
+    <select id="findByNo" resultMap="eventMap" parameterType="int">
+        select
+            EVTNO,
+            TITLE,
+            CONT,
+            STDATE,
+            EDDATE,
+            PBL,
+            EVCODE,
+            ECOUNT,
+            WDATE,
+            VCNT
+        from jang_event
+        where EVTNO=#{no}
+    </select>
+
+    <insert id="insert" parameterType="event"
+     useGeneratedKeys="true" keyColumn="evtno" keyProperty="no">
+        insert into jang_event(TITLE,CONT,STDATE,EDDATE,PBL,EVCODE,ECOUNT,WDATE,VCNT)
+        values (#{title},#{content},#{startDate},#{endDate},#{disclosure},#{eventCode},#{capacity},now(),0)
+    </insert>
+
+    <delete id="deleteByNo" parameterType="int">
+        delete from jang_event
+        where EVTNO=#{no}
+    </delete>
+
+    <delete id="deleteJoinByEventNo" parameterType="int">
+        delete from jang_join
+        where EVTNO=#{no}
+    </delete>
+
+    <update id="update" parameterType="event">
+        update jang_event set
+        TITLE=#{title},
+        CONT=#{content},
+        STDATE=#{startDate},
+        EDDATE=#{endDate},
+        PBL=#{disclosure},
+        EVCODE=#{eventCode},
+        ECOUNT=#{capacity}
+        where EVTNO=#{no}
+    </update>
+
+    <update id="addViewCount" parameterType="int">
+        update jang_event set
+        VCNT = VCNT + 1
+        where EVTNO = #{no}
+    </update>
+
+    <select id="eventPostCount" resultType="int">
+        select
+            count(EVTNO)
+        from jang_event
+    </select>
+
+    <select id="findAll" parameterType="int" resultMap="eventMap">
+        select
+            EVTNO,
+            TITLE,
+            STDATE,
+            EDDATE,
+            EVCODE,
+            PBL,
+            VCNT
+        from jang_event
+        order by EVTNO desc
+        limit #{size} offset #{displayPost}
+    </select>
+
+</mapper>

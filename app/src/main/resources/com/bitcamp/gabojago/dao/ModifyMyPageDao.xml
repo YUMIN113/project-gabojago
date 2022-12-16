@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitcamp.gabojago.dao.ModifyMyPageDao">
+
+    <resultMap type="member" id="memberMap">
+        <id column="ID" property="id"/>
+        <result column="PWD" property="password"/>
+        <result column="NNAME" property="nickName"/>
+        <result column="PROFILE" property="profileFig"/>
+        <result column="NAME" property="name"/>
+        <result column="EMAIL" property="email"/>
+        <result column="PNUM" property="phoneNo"/>
+        <result column="BIRTH" property="birthDay"/>
+        <result column="GENDER" property="gender"/>
+        <result column="SNS" property="snsAddress"/>
+        <result column="MBTI" property="mbti"/>
+        <result column="STATUS" property="status"/>
+        <result column="OUTDATE" property="outDate"/>
+
+    </resultMap>
+
+    <update id="profileUpdate" parameterType="member">
+        update jang_member set
+        PROFILE=#{profileFig},
+        NNAME=#{nickName},
+        MBTI=#{mbti},
+        SNS=#{snsAddress}
+        where ID=#{id}
+    </update>
+
+
+    <update id="myAccountUpdate" parameterType="member">
+        update jang_member set
+        PWD=sha2(#{password},256),
+        EMAIL=#{email},
+        PNUM=#{phoneNo},
+        GENDER=#{gender},
+        BIRTH=#{birthDay}
+        where
+        ID=#{id}
+    </update>
+
+    <select id="findById" resultMap="memberMap">
+        select
+        ID,
+        NNAME,
+        PROFILE,
+        NAME,
+        EMAIL,
+        PNUM,
+        BIRTH,
+        GENDER,
+        SNS,
+        MBTI
+        from jang_member
+        where
+        ID=#{id}
+    </select>
+
+<!--닉네임 중복확인-->
+    <select id="findByNickName" resultType="int">
+        select count(*)
+        from jang_member
+        where
+        NNAME=#{nickName}
+    </select>
+
+
+    <select id="checkPassword" resultType="int" parameterType="String">
+        select
+            count(*)
+        from jang_member
+        where ID=#{id} and PWD=sha2(#{password},256)
+    </select>
+
+    <update id="resignMemberStatus" parameterType="String">
+        update jang_member set
+        STATUS='탈퇴',
+        OUTDATE=now()
+        where ID=#{id} and PWD=sha2(#{password},256)
+    </update>
+
+</mapper>

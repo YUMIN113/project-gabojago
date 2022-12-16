@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bitcamp.gabojago.dao.recommendation.ReportDao">
+
+  <resultMap type="report" id="reportMap">
+    <id column="rpno" property="rpno"/>
+    <result column="recono" property="recono"/>
+    <result column="id" property="id"/>
+    <result column="rsn" property="rsn"/>
+    <result column="rst" property="rst"/>
+    <result column="rstdate" property="rstdate"/>
+  </resultMap>
+  <!-- resultMap 끝 -->
+
+  <!-- recommendation Report Add -->
+  <insert id="recommendationReportAdd" parameterType="report">
+    insert into jang_report(recono,id,rsn)
+    values(#{recono}, #{id}, #{rsn})
+  </insert>
+  
+  <select id="countReportById" resultType="int">
+    select
+      count(*)
+    from
+      jang_report
+    join
+      jang_so_recommendation
+    on
+      jang_so_recommendation.recono=jang_report.recono
+    where
+      jang_so_recommendation.id=#{id}
+  </select>
+
+  <select id="countRecommendationReport" resultType="int">
+    select
+      count(*)
+    from
+      jang_report
+    where
+      recono=#{recono}
+  </select>
+
+</mapper>

@@ -76,11 +76,11 @@ public class NoticeController {
     }
 
     @PostMapping ("noticeEditUpdate")
-    public String noticeEditUpdate(Notice notice) throws Exception {
+    public String noticeEditUpdate(Notice notice, @RequestParam("page") Integer page) throws Exception {
 
         noticeService.noticeEditUpdate(notice);
 
-        return "redirect:noticeListPage?page=1";
+        return "redirect:noticeListPage?page=" + page;
     }
 
     @GetMapping("noticeDelete")

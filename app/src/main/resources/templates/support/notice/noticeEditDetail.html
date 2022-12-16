@@ -110,6 +110,11 @@
                         <form action='noticeEditUpdate' method="post" class="contact-form">
                             <div class="form-group">
                                 <p>
+                                    <input type="hidden" id="page" name="page" data-th-value="${page}"/>
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <p>
                                     <span data-th-text="'No.'+${notice.no}">100</span>
                                     <input type="hidden" id="no" name="no" data-th-value="${notice.no}"/>
                                 </p>

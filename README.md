@@ -1,5 +1,21 @@
-# gabojago-project
+# 가보자Go
 가보자GO 프로젝트
+
+## 1. 제작 기간 & 참여 인원
+1) 제작 기간 : 2022.09월 14일 ~ 11월 25일 (시연 및 발표 : 11월 25일)
+2) 참여 인원 : 6명
+
+## 2. 사용 기술
+1) Java (Spring Boot, Gradle, Lombok, Thymeleaf, JavaMail)
+2) Undertow
+3) MyBatis
+4) HTML/CSS
+5) Javascript (jQuery)
+6) Visual Studio Code
+7) eXERD
+8) MariaDb
+9) Kakao map API, Kakao Login API
+10) Bootstrap
 
 ## 핵심 트러블 슈팅
 1. 페이징 처리 문제.

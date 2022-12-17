@@ -6,16 +6,16 @@
 2) 참여 인원 : 6명
 
 ## 2. 사용 기술
-1) Java (Spring Boot, Gradle, Lombok, Thymeleaf, JavaMail)
-2) Undertow
-3) MyBatis
-4) HTML/CSS
-5) Javascript (jQuery)
-6) Visual Studio Code
-7) eXERD
-8) MariaDb
-9) Kakao map API, Kakao Login API
-10) Bootstrap
+- Java (Spring Boot, Gradle, Lombok, Thymeleaf, JavaMail)
+- Undertow
+- MyBatis
+- HTML/CSS
+- Javascript (jQuery)
+- Visual Studio Code
+- eXERD
+- MariaDb
+- Kakao map API, Kakao Login API
+- Bootstrap
 
 ## 핵심 트러블 슈팅
 1. 페이징 처리 문제.

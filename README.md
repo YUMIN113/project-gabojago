@@ -119,21 +119,21 @@ public String profileUpdate() {
 
 ```java
 <script>
-function snsAddressBlankCheck() {
-  let snsAddressInput = document.querySelector("#snsAddress")
+  function snsAddressBlankCheck() {
+    let snsAddressInput = document.querySelector("#snsAddress")
 	document.querySelector("#snsAddress").value = snsAddressInput.value.trim();
-}  
+  }  
 </script>    
 ```
 
 ```java
 <html>
-<div class="form-group">
-				    <label>INSTAGRAM</label>
-	                <input name='snsAddress' type="text" class="form-control" id="snsAddress" onchange="snsAddressBlankCheck()"
-						   placeholder="인스타그램 아이디를 입력해 주세요."
-						   data-th-value="${member.snsAddress}">
-				  </div>
+  <div class="form-group">
+    <label>INSTAGRAM</label>
+      <input name='snsAddress' type="text" class="form-control" id="snsAddress" onchange="snsAddressBlankCheck()"
+	     placeholder="인스타그램 아이디를 입력해 주세요."
+	     data-th-value="${member.snsAddress}">
+  </div>
 </html>    
 ```
 

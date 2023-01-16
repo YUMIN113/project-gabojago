@@ -95,3 +95,47 @@ public void noticeDetail(int no, Model model, @RequestParam("page") Integer page
 ```
 </div>
 </details>
+
+2. 휴먼 에러 문제.
+- 요구사항 : 인스타그램 아이디를 저장하여 마이페이지에서 사용자의 인스타그램에 접속할 수 있게 한다.
+- 문제점 : 아이디 입력 시, 휴먼 에러로 공백이 입력되었고 이를 오류로 인식하지 못하여 문제없이 DB에 저장되었다. 이후, 인스타그램에 접속 시 문제 발생.
+- 해결책 : 프론트와 백 모두에 trim() 함수 처리하여 실수로 공백이 입력되어도 공백이 제거되어 DB에 저장될 수 있도록 처리.
+
+<details>
+<summary><b>개선된 코드</b></summary>
+<div markdown="1">
+
+1. ModifyMyPageController
+- 해결책 : ModifyMyPageController 의 profileUpdate() 메서드에 trim() 함수 추가
+```java
+@PostMapping("profileUpdate")
+public String profileUpdate() {
+  saveMember.setNickName(member.getNickName().trim());      
+}
+```
+
+2. profileDetail.html
+- 해결책 : trim() 함수를 포함한 snsAddressBlankCheck() 메서드를 추가하고 인스타그램 아이디 입력칸에 onchange 이벤트 사용
+
+```java
+<script>
+function snsAddressBlankCheck() {
+  let snsAddressInput = document.querySelector("#snsAddress")
+	document.querySelector("#snsAddress").value = snsAddressInput.value.trim();
+}  
+</script>    
+```
+
+```java
+<html>
+<div class="form-group">
+				    <label>INSTAGRAM</label>
+	                <input name='snsAddress' type="text" class="form-control" id="snsAddress" onchange="snsAddressBlankCheck()"
+						   placeholder="인스타그램 아이디를 입력해 주세요."
+						   data-th-value="${member.snsAddress}">
+				  </div>
+</html>    
+```
+
+</div>
+</details>

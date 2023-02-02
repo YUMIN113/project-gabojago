@@ -24,6 +24,8 @@ public class NoticeController {
 
     private int PAGE_CORRECTION = 1;
 
+    private final int PAGE_LENGTH = 2;
+
 
 
     public NoticeController(NoticeService noticeService, ServletContext sc) {
@@ -94,8 +96,9 @@ public class NoticeController {
         int total = noticeService.count();
 
         page -= PAGE_CORRECTION;
+
         List<Notice> noticeList = noticeService.noticeListPage((page) * size, size);
-        PageResponseDto<Notice> pageResponseDto = new PageResponseDto<>(page, size, total, noticeList);
+        PageResponseDto<Notice> pageResponseDto = new PageResponseDto<>(page, size, total, PAGE_LENGTH, noticeList);
 
         model.addAttribute("notices", pageResponseDto.getDtoList());
         model.addAttribute("page", pageResponseDto.getPage() + 1);

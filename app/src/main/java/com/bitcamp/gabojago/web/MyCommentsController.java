@@ -22,6 +22,8 @@ public class MyCommentsController {
 
     private int PAGE_CORRECTION = 1;
 
+    private int PAGE_LENGTH = 2;
+
     public MyCommentsController(MyCommentsService myCommentsService, MemberService memberService) {
         this.myCommentsService = myCommentsService;
         this.memberService = memberService;
@@ -53,7 +55,7 @@ public class MyCommentsController {
 
         jangComment.setWriter((Member) session.getAttribute("loginMember"));
         List<JangComment> recommendationCommentList = myCommentsService.myRecommendationCommentListPage((page) * size, size, jangComment.getWriter().getId());
-        PageResponseDto<JangComment> pageResponseDto = new PageResponseDto<>(page, size, total, recommendationCommentList);
+        PageResponseDto<JangComment> pageResponseDto = new PageResponseDto<>(page, size, total, PAGE_LENGTH, recommendationCommentList);
 
         model.addAttribute("myRecommendationComments", pageResponseDto.getDtoList());
         model.addAttribute("pages", pageResponseDto.getPage());
@@ -90,7 +92,7 @@ public class MyCommentsController {
 
         exhibitionReview.setWriter((Member) session.getAttribute("loginMember"));
         List<ExhibitionReview> exhibitionReviewList = myCommentsService.myExhibitionReviewListPage((page) * size, size, exhibitionReview.getWriter().getId());
-        PageResponseDto<ExhibitionReview> pageResponseDto = new PageResponseDto<>(page, size, total, exhibitionReviewList);
+        PageResponseDto<ExhibitionReview> pageResponseDto = new PageResponseDto<>(page, size, total, PAGE_LENGTH, exhibitionReviewList);
 
         model.addAttribute("myExhibitionReviews", pageResponseDto.getDtoList());
         model.addAttribute("pages", pageResponseDto.getPage());

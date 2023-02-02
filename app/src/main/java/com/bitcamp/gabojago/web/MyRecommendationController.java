@@ -23,6 +23,8 @@ public class MyRecommendationController {
 
     private int PAGE_CORRECTION = 1;
 
+    private int PAGE_LENGTH = 2;
+
     public MyRecommendationController(MyRecommendationService myRecommendationService, MemberService memberService) {
         this.myRecommendationService = myRecommendationService;
         this.memberService = memberService;
@@ -52,7 +54,7 @@ public class MyRecommendationController {
 
         recommendation.setWriter((Member) session.getAttribute("loginMember"));
         List<Recommendation> recommendationList = myRecommendationService.myRecommendationListPage((page) * size, size, recommendation.getWriter().getId());
-        PageResponseDto<Recommendation> pageResponseDto = new PageResponseDto<>(page, size, total, recommendationList);
+        PageResponseDto<Recommendation> pageResponseDto = new PageResponseDto<>(page, size, total, PAGE_LENGTH, recommendationList);
 
         model.addAttribute("myRecommendations", pageResponseDto.getDtoList());
         model.addAttribute("pages", pageResponseDto.getPage());

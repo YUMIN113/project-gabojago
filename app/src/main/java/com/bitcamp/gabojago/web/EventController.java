@@ -34,6 +34,8 @@ public class EventController {
     EventService eventService;
     private int PAGE_CORRECTION = 1;
 
+    private int PAGE_LENGTH = 2;
+
     public EventController(EventService eventService, ServletContext sc) {
         System.out.println("EventController() 호출됨>-<");
         this.eventService = eventService;
@@ -46,7 +48,7 @@ public class EventController {
 
         page -= PAGE_CORRECTION;
         List<Event> list = eventService.list((page) * size, size);
-        PageResponseDto<Event> eventPageResponseDto = new PageResponseDto<>(page, size, total, list);
+        PageResponseDto<Event> eventPageResponseDto = new PageResponseDto<>(page, size, total, PAGE_LENGTH, list);
 
         model.addAttribute("events", eventPageResponseDto.getDtoList());
         model.addAttribute("pages", eventPageResponseDto.getPage());

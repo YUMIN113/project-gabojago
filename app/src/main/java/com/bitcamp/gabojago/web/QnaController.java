@@ -21,6 +21,8 @@ public class QnaController {
     QnaService qnaService;
     private int PAGE_CORRECTION = 1;
 
+    private int PAGE_LENGTH = 3;
+
     public QnaController(QnaService qnaService) {
         System.out.println("QnaController() 호출됨!");
         this.qnaService = qnaService;
@@ -32,7 +34,7 @@ public class QnaController {
 
         page -= PAGE_CORRECTION;
         List<QnaBoard> list = qnaService.list((page) * size, size);
-        PageResponseDto<QnaBoard> qnaBoardPageResponseDto = new PageResponseDto<>(page, size, total, list);
+        PageResponseDto<QnaBoard> qnaBoardPageResponseDto = new PageResponseDto<>(page, size, total, PAGE_LENGTH, list);
 
         model.addAttribute("qnaBoards", qnaBoardPageResponseDto.getDtoList());
         model.addAttribute("pages", qnaBoardPageResponseDto.getPage());

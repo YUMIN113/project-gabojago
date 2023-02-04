@@ -33,7 +33,7 @@
 2. NoticeController 
 ```java
 @GetMapping("noticeDetail")
-public void noticeDetail(int no, Model model, @RequestParam("page") Integer page) throws Exception {
+public void noticeDetail(int no, Model model) throws Exception {
 
   noticeService.addHits(no); // 조회수
   Notice notice = noticeService.get(no);

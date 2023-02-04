@@ -28,8 +28,8 @@
 1. noticeListPage.html
 ```java
 <a href='detail?no=1'
-data-th-href="@{noticeDetail(no=${notice.no})}"
-data-th-text="${notice.title == ''} ? '(제목없음)' : ${notice.title}">제목</a>
+   data-th-href="@{noticeDetail(no=${notice.no})}"
+   data-th-text="${notice.title == ''} ? '(제목없음)' : ${notice.title}">제목</a>
 ```
 2. NoticeController 
 ```java

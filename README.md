@@ -27,8 +27,7 @@
 
 1. noticeListPage.html
 ```java
-<a href='detail?no=1'
-   data-th-href="@{noticeDetail(no=${notice.no})}"
+<a data-th-href="@{noticeDetail(no=${notice.no})}"
    data-th-text="${notice.title == ''} ? '(제목없음)' : ${notice.title}">제목</a>
 ```
 2. NoticeController 
@@ -65,7 +64,7 @@ public void noticeDetail(int no, Model model, @RequestParam("page") Integer page
 - 해결책 : 서버에서 받아 온 page 값을 파라미터로 주기 위해 코드 추가
 ```java
 <a data-th-href="@{noticeDetail(no=${notice.no}, page=${page})}"
-                 data-th-text="${notice.title == ''} ? '(제목없음)' : ${notice.title}">제목</a>
+   data-th-text="${notice.title == ''} ? '(제목없음)' : ${notice.title}">제목</a>
 ```
 
 2. NoticeController

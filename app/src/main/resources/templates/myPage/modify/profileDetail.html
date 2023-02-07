@@ -83,7 +83,7 @@
 					  });
 
 				  } else if(data == 0) {
-					  $('#nickCheck').attr('value', 'Y');
+
 					  isNickNameDuplicateCheck = true;
 
 					  swal({
@@ -100,10 +100,12 @@
 
 	  function nickNameOnChangeLogic() {
 		  isNickNameChange = true;
+		  isNickNameDuplicateCheck = false;
 	  }
 
 	  function modifyMemberInfoLogic() {
 		  if (isNickNameChange) {
+
 			  if (!isNickNameDuplicateCheck) {
 
 				  swal({
@@ -116,7 +118,6 @@
 				  return;
 			  }
 		  }
-
 		  document.querySelector("#profileModifyForm").submit();
 	  }
 

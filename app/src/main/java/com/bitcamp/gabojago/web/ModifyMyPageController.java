@@ -60,7 +60,6 @@ public class ModifyMyPageController {
             Member member,
             @RequestParam MultipartFile file,
             Model model,
-            RedirectAttributes redirectAttributes,
             HttpSession session) throws Exception {
 
         Member loginMember = (Member) session.getAttribute("loginMember");

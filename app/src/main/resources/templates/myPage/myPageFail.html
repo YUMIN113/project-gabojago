@@ -3,15 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>myPageFail</title>
-  <script src="http://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script th:inline="javascript">
-
-    // swal({
-    //
-    //   title : "로그인이 필요한 항목입니다. 회원가입 또는 로그인해 주세요.",
-    //   icon : 'warning'
-    //
-    // });
     const myPageFailMessage = [[${myPageFailMessage}]];
     alert(myPageFailMessage);
     history.back();
